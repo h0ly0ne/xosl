@@ -24,11 +24,12 @@ LOADERSEG       equ     8000h
 
                 .data
                 extrn   LoaderName: near
+                extrn   DriveNumber: byte
 
-		.code
+                .code
                 extrn   ReadFile: near
 
-		.startup
+                .startup
                 db      0eah            ;jmp 07b0:0105
                 dd      07b00105h
 ;07b0:0105:
@@ -36,6 +37,7 @@ LOADERSEG       equ     8000h
                 mov     ds,ax
                 mov     ss,ax
                 mov     sp,0fffeh
+                mov     DriveNumber,dl
 
 
                 push    LOADERADDR

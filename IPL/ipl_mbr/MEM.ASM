@@ -24,23 +24,19 @@
 ;int MemCompare(const void far *s1, const void far *s2, U16B count);
 ;Return: ax == 0 on equal
 MemCompare      proc    
-                push    bp
+                pusha
                 mov     bp,sp
-                push    si
-                push    di
                 push    ds
 
                 xor     ax,ax
-                les     di,[bp + 4]
-                lds     si,[bp + 8]
-                mov     cx,[bp + 12]
+                les     di,[bp + 2 + 16]
+                lds     si,[bp + 6 + 16]
+                mov     cx,[bp + 10 + 16]
                 cld
                 rep     cmpsb
-                setne   al
                 pop     ds
-                pop     di
-                pop     si
-                pop     bp
+                popa
+                setne   al
                 ret
 MemCompare      endp
 
