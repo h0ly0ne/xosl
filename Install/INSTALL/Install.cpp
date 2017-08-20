@@ -65,7 +65,7 @@ int CInstaller::Install(CVesa::TGraphicsMode GraphicsMode, CMouse::TMouseType Mo
 
 	if (FatInstall.InstallFiles(DosDrive) == -1)
 		return -1;
-	if (FatInstall.InstallIpl(&Ipl) == -1)
+	if (FatInstall.InstallIpl(DosDrive.Drive,&Ipl) == -1)
 		return -1;
 
 	TextUI.OutputStr("\nInstall complete\n");
@@ -119,7 +119,7 @@ int CInstaller::Install(CVesa::TGraphicsMode GraphicsMode, CMouse::TMouseType Mo
 	SetPartId(PartIndex,0x78);
 
 
-	if (FatInstall.InstallIpl(&Ipl) == -1)
+	if (FatInstall.InstallIpl(DosDrive.Drive,&Ipl) == -1)
 		return -1;
 
 	TextUI.OutputStr("\nInstall complete\n");
@@ -135,7 +135,7 @@ int CInstaller::Uninstall(const CDosDriveList::CDosDrive &DosDrive, int Original
 		if (LoadDefaultMbr(MbrBuffer) == -1)
 			return -1;
 	
-	if (FatInstall.InstallIpl(MbrBuffer) == -1)
+	if (FatInstall.InstallIpl(DosDrive.Drive,MbrBuffer) == -1)
 		return -1;
 
 	FatInstall.RemoveXoslFiles(DosDrive.DriveChar);
@@ -161,15 +161,12 @@ int CInstaller::Uninstall(int PartIndex, int OriginalMbr)
 	}
 	else
 		MbrBuffer = OriginalMbrBuffer;
-
-		
-	if (FatInstall.InstallIpl(MbrBuffer) == -1)
-		return -1;
 		
 	Partition = PartList.GetPartition(PartIndex);
 	FsCreator.RestorePartition(Partition->Drive,Partition->StartSector);
 
-
+	if (FatInstall.InstallIpl(Partition->Drive,MbrBuffer) == -1)
+		return -1;
 
 	TextUI.OutputStr("\nUninstall complete\n");
 	return 0;
@@ -184,7 +181,7 @@ int CInstaller::Restore(const CDosDriveList::CDosDrive &DosDrive)
 	if (LoadDosMbr(DosDrive.DriveChar,XoslFiles.GetCurrentMbrName(),Ipl) == -1)
 		return -1;
 
-	if (FatInstall.InstallIpl(Ipl) == -1)
+	if (FatInstall.InstallIpl(DosDrive.Drive,Ipl) == -1)
 		return -1;
 
 	TextUI.OutputStr("\nRestore complete\n");
@@ -199,7 +196,9 @@ int CInstaller::Restore(int PartIndex)
 	if (LoadRawMbr(PartIndex,XoslFiles.GetCurrentMbrName(),CurrentMbr) == -1)
 		return -1;
 
-	if (FatInstall.InstallIpl(CurrentMbr) == -1)
+	const TPartition *Partition = 
+		PartList.GetPartition(PartIndex);
+	if (FatInstall.InstallIpl(Partition->Drive,CurrentMbr) == -1)
 		return -1;
 
 	TextUI.OutputStr("\nRestore complete\n");

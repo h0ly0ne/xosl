@@ -160,15 +160,15 @@ int CFatInstall::InstallFiles(const CDosDriveList::CDosDrive &DosDrive)
 
 
 
-int CFatInstall::InstallIpl(void *Ipl)
+int CFatInstall::InstallIpl(int Drive, void *Ipl)
 {
 	CDisk Disk;
 	unsigned char Mbr[512];
 	unsigned short Checksum;
 	int Index;
 
-	TextUI.OutputStr("Installing IPL...");
-	if (Disk.Map(0x80,0) == -1) {
+	TextUI.OutputStr("Installing IPL to drive %d...", Drive);
+	if (Disk.Map(Drive,0) == -1) {
 		TextUI.OutputStr("failed\nUnable to access MBR");
 		return -1;
 	}
