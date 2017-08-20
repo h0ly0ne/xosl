@@ -1,0 +1,14 @@
+Arch/
+*.[Oo][Bb][Jj]
+*~
+*.[Ll][Ii][Bb]
+*.[Ll][Ss][Tt]
+*.[Mm][Aa][Pp]
+*.[Xx][Cc][Ff]
+*.[Bb][Ii][Nn]
+*.[Bb][Aa][Kk]
+*.[Xx][Xx][Ff]
+*.[Ee][Xx][Ee]
+!Resource/sbminst.exe
+!Resource/cwsdpmi.exe
+!XOSL/SPLIT.EXE
