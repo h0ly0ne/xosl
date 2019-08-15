@@ -12,6 +12,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * The IPL looks for files on the boot drive, not on drive 0x80.
 * The installer copies the IPL to the disk holding the DOS partition to which
   the files are installed.
+* The helper tool `SPLIT.EXE` is now built from sources, rather than tracking
+  a prebuilt version.
+* `EXESPLIT` sources fixed to add the required 2-byte header to the first
+  segment.
 
 ### Added
 
