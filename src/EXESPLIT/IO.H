@@ -25,6 +25,7 @@
 _extern int creat(const char *path);
 _extern int open(const char *path, int access);
 _extern void close(int handle);
+_extern unsigned long getSize(int handle);
 _extern unsigned short read(int handle, void *buf, unsigned short len);
 _extern unsigned short write(int handle, void *buf, unsigned short len);
 _extern int chmod(const char *path, int amode);

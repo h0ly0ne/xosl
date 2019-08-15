@@ -11,7 +11,7 @@
                 .model  compact
                 .386p
                 .code
-                public  _creat, _open, _close, _read, _write, _chmod
+                public  _creat, _open, _close, _read, _write, _chmod, _getSize
 
 ;int creat(const char *path);
 _creat          proc
@@ -56,6 +56,42 @@ _close          proc
                 pop     bp
                 ret
 _close          endp
+
+;unsigned long getSize(int handle);
+_getSize        proc
+                push    bp
+                mov     bp,sp
+
+                mov     ax,4202h
+                mov     bx,[bp + 4]
+                xor     cx, cx
+                xor     dx, dx
+
+                int     21h
+                jc      getSizeKO
+
+                push    dx
+                push    ax
+
+                mov     ax,4200h
+                mov     bx,[bp + 4]
+                xor     cx, cx
+                xor     dx, dx
+
+                int     21h
+                pop     ax
+                pop     dx
+                jnc     getSizeOK
+
+
+getSizeKO:      
+                xor     ax, ax
+                xor     dx, dx
+
+getSizeOK:
+                pop     bp
+                ret
+_getSize        endp
 
 ;unsigned short read(int handle, void *buf, unsigned short len);
 _read           proc

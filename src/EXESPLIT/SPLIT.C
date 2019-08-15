@@ -36,11 +36,20 @@ void WriteHeader(int ifh)
 	TExeHeader ExeHeader;
 	int ofh;
 	unsigned short Count;
+	unsigned long Chunks = getSize(ifh);
+
 
 	ofh = creat(DestFile);
 	read(ifh,&ExeHeader,sizeof (ExeHeader));
-	write(ofh,&ExeHeader,sizeof (ExeHeader));
 	Count = ExeHeader.HeaderSize * 16 - sizeof (TExeHeader);
+
+	/** Add missing header (number of segments) */
+	Chunks -= Count;
+	Chunks = 1 + Chunks / 32768 + !!(Chunks % 32768);
+	Chunks--;
+	write(ofh,&Chunks,sizeof(unsigned short));
+
+	write(ofh,&ExeHeader,sizeof (ExeHeader));
 	read(ifh,Buffer,Count);
 	write(ofh,Buffer,Count);
 	close(ofh);
