@@ -12,10 +12,15 @@ all: build arch
 build: xosl xoslload install ipl
 
 
-xosl:
+xosl: exesplit
     $(ENTER) xosl
     $(MAKEDIR)\make
-    split
+    ..\exesplit\split
+    $(LEAVE)
+
+exesplit:
+    $(ENTER) exesplit
+    $(MAKEDIR)\make
     $(LEAVE)
 
 xoslload:
@@ -50,7 +55,7 @@ arch:
 
 #------------------------- CLEAN ------------------------- #
 
-clean: clean_xosl clean_xoslload clean_install clean_ipl clean_arch
+clean: clean_xosl clean_xoslload clean_install clean_ipl clean_arch clean_exesplit
 
 
 clean_xosl:
@@ -88,4 +93,9 @@ clean_arch:
     $(DELETE) *.bin
     $(DELETE) *.mbr
     $(DELETE) *.txt
+    $(LEAVE)
+
+clean_exesplit:
+    $(ENTER) exesplit
+    $(MAKEDIR)\make clean
     $(LEAVE)

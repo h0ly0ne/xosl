@@ -13,7 +13,6 @@
 !/src/Resource/XRPART01.XXF
 !/src/Resource/sbminst.exe
 !/src/Resource/cwsdpmi.exe
-!/src/XOSL/SPLIT.EXE
 /build/**
 !/build/.keep_empty_dir
 *.[Ee][Xx][Ee]
