@@ -61,6 +61,7 @@ clean: clean_xosl clean_xoslload clean_install clean_ipl clean_arch clean_exespl
 clean_xosl:
     $(ENTER) xosl
     $(MAKEDIR)\make clean
+    $(DELETE) XOSLIMG*.XXF
     $(LEAVE)
 
 clean_xoslload:
