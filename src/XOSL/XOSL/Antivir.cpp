@@ -25,7 +25,7 @@ void CAntiVirus::Sweep()
 		CKeyboard::WaitKeyStroke();
 	}
 	else {
-		if (memcmp(RealMBR,DiskMBR,440) != 0) {
+		if (memcmp(RealMBR,DiskMBR,IPL_SIZE) != 0) {
 			DisplayWarning();
 			if (CKeyboard::WaitKeyStroke() == KEY_ENTER) {
 				FixMBR(DiskMBR);
@@ -97,7 +97,7 @@ void CAntiVirus::FixMBR(const char *DiskMBR)
 
 	Disk.Map(0x80,0);
 	Disk.Read(0,MBR,1);
-	memcpy(MBR,DiskMBR,440);
+	memcpy(MBR,DiskMBR,IPL_SIZE);
 	Disk.Write(0,MBR,1);
 }
 
@@ -107,4 +107,3 @@ void CAntiVirus::Reboot()
 
 	Quit.Reboot();
 }
-

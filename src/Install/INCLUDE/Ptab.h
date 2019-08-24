@@ -18,6 +18,9 @@
 #define PART_MBR     2
 #define PART_FLOPPY  3
 
+#define IPL_SIZE 440
+#define PTABLE_OFFSET_IN_MBR 446
+
 typedef struct {
 	unsigned char Activated;
 	unsigned char StartHead;
@@ -30,7 +33,7 @@ typedef struct {
 } TPartEntry;
 
 typedef struct {
-	char IPL[446];
+	char Reserved[PTABLE_OFFSET_IN_MBR];
 	TPartEntry Entries[4];
 	unsigned short MagicNumber; // 0xaa55
 } TPartTable;

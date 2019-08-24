@@ -11,6 +11,8 @@
 #ifndef __ipl__
 #define __ipl__
 
+#include "Ptab.h"
+
 typedef struct {
 	unsigned long DiskSectors;
 	unsigned long DiskHeads;
@@ -39,7 +41,7 @@ typedef struct {
 } TFat32IplData;
 
 typedef struct {
-	char Ipl[436 - sizeof (TFat16IplData)];
+	char Ipl[IPL_SIZE - sizeof(long) - sizeof (TFat16IplData)];
 	TFat16IplData IplData;
 	char Reserved[10];
 	char PTable[16 * 4];
@@ -47,7 +49,7 @@ typedef struct {
 } TFat16Ipl;
 
 typedef struct {
-	char Ipl[436 - sizeof (TFat32IplData)];
+	char Ipl[IPL_SIZE - sizeof(long) - sizeof (TFat32IplData)];
 	TFat32IplData IplData;
 	char Reserved[10];
 	char PTable[16 * 4];

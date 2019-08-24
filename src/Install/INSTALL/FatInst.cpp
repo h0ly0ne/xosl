@@ -178,7 +178,7 @@ int CFatInstall::InstallIpl(int Drive, void *Ipl)
 		TextUI.OutputStr("failed\nUnable to read MBR");
 		return -1;
 	}
-	MemCopy(Mbr,Ipl,440);
+	MemCopy(Mbr,Ipl,IPL_SIZE);
 	if (Disk.Write(0,Mbr,1) == -1) {
 		Disk.Unlock();
 		TextUI.OutputStr("failed\nUnable to write to MBR");

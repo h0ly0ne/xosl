@@ -1,9 +1,11 @@
 #ifndef MBRPassH
 #define MBRPassH
 
+#include "Ptab.h"
+
 class CMBRPassword {
 public:
-	char IPL[436];
+	char IPL[IPL_SIZE - sizeof(long)];
 	unsigned long Password;
 	char Reserved[6];
 	char PartTable[16 * 4];

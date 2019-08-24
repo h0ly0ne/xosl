@@ -11,6 +11,9 @@
 #ifndef __ptab__
 #define __ptab__
 
+#define IPL_SIZE 440
+#define PTABLE_OFFSET_IN_MBR 446
+
 typedef struct {
 	unsigned char Activated;
 	unsigned char StartHead;
@@ -23,7 +26,7 @@ typedef struct {
 } TPTabEntry;
 
 typedef struct {
-	char Reserved[446];				// IPL in MBR
+	char Reserved[PTABLE_OFFSET_IN_MBR];				// IPL in MBR
 	TPTabEntry Table[4];				// The partition table
 	unsigned short MagicNumber;	// should be 0xaa55
 } TPTabSector;

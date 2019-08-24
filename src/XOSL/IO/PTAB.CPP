@@ -349,7 +349,7 @@ void CPartList::InsertMbrPTab(void *DestAddr)
 	char *Dest = (char *)DestAddr;
 
 	if (MBRList.size())
-		memcpy(&Dest[446],(*MBRList.begin()).Table->Entries,sizeof(TPartEntry[4]));
+		memcpy(&Dest[PTABLE_OFFSET_IN_MBR],(*MBRList.begin()).Table->Entries,sizeof(TPartEntry[4]));
 }
 
 void CPartList::ReadVolumeLabels()
