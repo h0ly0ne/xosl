@@ -18,9 +18,9 @@
 #define DEC 10
 #define HEX 16
 
-const char *Version = "Extended Operating System Loader 1.1.5";
+const char *Version = "Extended Operating System Loader 1.1.6";
 const char *Prog = "XOSL INSTALL UTILITY";
-const char *Copyright = "Copyright (c) 1999/2000, Geurt Vos";
+const char *Copyright = "Copyright (c) 1999/2000, Geurt Vos. Patches by Emanuele Giacomelli.";
 const char *StrInfoQuit = "Esc : Quit";
 const char *StrInfoSelect = "\x18 \x19 : Select Item";
 const char *StrInfoExec = "Enter     : Execute";
@@ -195,4 +195,3 @@ void CTextUI::ShowPopup(int Left, int Top, int Width, int Height, const char *Te
 	
 	Popup->Show();
 }
-

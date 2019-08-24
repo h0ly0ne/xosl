@@ -4,11 +4,11 @@ Extended Operating System Loader comes with ABSOLUTELY NO WARRANTY, it
 is destributed under the terms of the GNU General Public License (GPL).
 The full license can be found in the GPL.TXT file.
 
-1. 'Easy upgrade' is not support. XOSL 1.1.5 will have to be completely
+1. 'Easy upgrade' is not support. XOSL 1.1.6 will have to be completely
 reinstalled from scratch.
 
 2. If you have any other version installed, it is recommened
-to uninstall it before installing XOSL 1.1.5 To perform a 
+to uninstall it before installing XOSL 1.1.6 To perform a 
 quick uninstall, execute 'fdisk /mbr'.
 
 3. It is strongly recommended to install XOSL from a floppy. 
@@ -50,4 +50,3 @@ has at least 712kb (729088 byte) of free disk space BEFORE you run
 install (and after you have copied the XOSL install files to the 
 floppy). If you don't install Ranish Partition Manager, only 584kb 
 (598016 byte) of free disk space is required.
-
