@@ -20,6 +20,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   a prebuilt version.
 * `EXESPLIT` sources fixed to add the required 2-byte header to the first
   segment.
+* The MBR signature will be preserved even if SBM is installed.
 
 ### Added
 

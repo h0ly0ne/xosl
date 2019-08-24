@@ -26,6 +26,7 @@ public:
 	int CreateIpl(const CDosDriveList::CDosDrive &DosDrive, TIPL &Ipl);
 	int InstallFiles(const CDosDriveList::CDosDrive &DosDrive);
 	int InstallIpl(int Drive, void *Ipl);
+	int InstallIpl(int Drive, void *Ipl, const MBRSignature &Sig);
 
 	void RemoveXoslFiles(char DosDriveChar);
 
@@ -37,6 +38,7 @@ private:
 
 	int CreateIplFat16(const CDosDriveList::CDosDrive &DosDrive, int UseLba, TIPL &Ipl);
 	int CreateIplFat32(const CDosDriveList::CDosDrive &DosDrive, int UseLba, TIPL &Ipl);
+	int InstallIpl(int Drive, void *Ipl, const MBRSignature *Sig);
 };
 
 #endif

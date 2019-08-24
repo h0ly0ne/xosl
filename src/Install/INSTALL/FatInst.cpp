@@ -159,8 +159,15 @@ int CFatInstall::InstallFiles(const CDosDriveList::CDosDrive &DosDrive)
 }
 
 
+int CFatInstall::InstallIpl(int Drive, void *Ipl) {
+	return InstallIpl(Drive, Ipl, 0);
+}
 
-int CFatInstall::InstallIpl(int Drive, void *Ipl)
+int CFatInstall::InstallIpl(int Drive, void *Ipl, const MBRSignature &Sig) {
+	return InstallIpl(Drive, Ipl, &Sig);
+}
+
+int CFatInstall::InstallIpl(int Drive, void *Ipl, const MBRSignature *Sig)
 {
 	CDisk Disk;
 	unsigned char Mbr[512];
@@ -179,6 +186,9 @@ int CFatInstall::InstallIpl(int Drive, void *Ipl)
 		return -1;
 	}
 	MemCopy(Mbr,Ipl,IPL_SIZE);
+	if (Sig) {
+		MemCopy(Mbr + IPL_SIZE, Sig, sizeof(*Sig));
+	}
 	if (Disk.Write(0,Mbr,1) == -1) {
 		Disk.Unlock();
 		TextUI.OutputStr("failed\nUnable to write to MBR");

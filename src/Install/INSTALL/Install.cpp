@@ -39,6 +39,7 @@ CInstaller::~CInstaller()
 int CInstaller::Install(CVesa::TGraphicsMode GraphicsMode, CMouse::TMouseType MouseType, const CDosDriveList::CDosDrive &DosDrive, bool PartMan, bool SmartBm)
 {
 	TIPL Ipl;
+	MBRSignature Signature;
 
 	if (!PartMan) {
 		XoslFiles.IgnorePartManFiles();
@@ -51,6 +52,9 @@ int CInstaller::Install(CVesa::TGraphicsMode GraphicsMode, CMouse::TMouseType Mo
 		return -1; 
 
 	if (SmartBm) {
+		if (ReadSignature(DosDrive.Drive, Signature) == -1) {
+			return -1;
+		}
 		InstallSmartBootManager(DosDrive.Drive);
 	}
 	if (BackupOriginalMbr(-1,XoslFiles.GetSmartBmName()) == -1) {
@@ -65,8 +69,14 @@ int CInstaller::Install(CVesa::TGraphicsMode GraphicsMode, CMouse::TMouseType Mo
 
 	if (FatInstall.InstallFiles(DosDrive) == -1)
 		return -1;
-	if (FatInstall.InstallIpl(DosDrive.Drive,&Ipl) == -1)
-		return -1;
+
+    if (SmartBm) {
+		if (FatInstall.InstallIpl(DosDrive.Drive,&Ipl,Signature) == -1)
+			return -1;
+	} else {
+		if (FatInstall.InstallIpl(DosDrive.Drive,&Ipl) == -1)
+			return -1;
+	}
 
 	TextUI.OutputStr("\nInstall complete\n");
 	return 0;
@@ -77,6 +87,7 @@ int CInstaller::Install(CVesa::TGraphicsMode GraphicsMode, CMouse::TMouseType Mo
 	const TPartition *Partition;
 	TIPL Ipl;
 	CDosDriveList::CDosDrive DosDrive;
+	MBRSignature Signature;
 
 	if (!PartMan) {
 		XoslFiles.IgnorePartManFiles();
@@ -99,6 +110,9 @@ int CInstaller::Install(CVesa::TGraphicsMode GraphicsMode, CMouse::TMouseType Mo
 		return -1;
 	
 	if (SmartBm) {
+		if (ReadSignature(DosDrive.Drive, Signature) == -1) {
+			return -1;
+		}
 		InstallSmartBootManager(DosDrive.Drive);
 	}
 	if (BackupOriginalMbr(-1,XoslFiles.GetSmartBmName()) == -1) {
@@ -119,8 +133,13 @@ int CInstaller::Install(CVesa::TGraphicsMode GraphicsMode, CMouse::TMouseType Mo
 	SetPartId(PartIndex,0x78);
 
 
-	if (FatInstall.InstallIpl(DosDrive.Drive,&Ipl) == -1)
-		return -1;
+    if (SmartBm) {
+		if (FatInstall.InstallIpl(DosDrive.Drive,&Ipl,Signature) == -1)
+			return -1;
+	} else {
+		if (FatInstall.InstallIpl(DosDrive.Drive,&Ipl) == -1)
+			return -1;
+	}
 
 	TextUI.OutputStr("\nInstall complete\n");
 	return 0;
@@ -487,4 +506,17 @@ void CInstaller::InstallSmartBootManager(int /*Drive*/)
 
 
 
+}
+
+int CInstaller::ReadSignature(int Drive, MBRSignature& sig) {
+	CDisk Disk;
+	TPartTable Table;
+	TextUI.OutputStr("Save disk sig. for SBM install...");
+	if (Disk.Map(Drive,0) == -1 || Disk.Read(0,&Table,1) == -1) {
+		TextUI.OutputStr("failed\n");
+		return -1;
+	}
+	sig = Table.Signature;
+	TextUI.OutputStr("done\n");
+	return 0;
 }

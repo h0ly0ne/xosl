@@ -16,12 +16,12 @@ The goals of this project are:
 ## Easy compilation
 
 The Borland C++ environment is a DOS tool. As such, it can only be run under
-a DOS environment. However, thanks to the [DosBox](https://www.dosbox.com/)
+a DOS environment. However, thanks to [DosBox](https://www.dosbox.com/)
 it is quite easy to setup a fully working DOS environment.
 
-The Borland C++ tools are included with the sources: they take few MiB of
-space and are now an easily found abandonware. I have not included the setup
-or the entire installation tree. Instead, only the file sets that are
+The Borland C++ tools are included with the sources: they take up a few MiB
+of space and are now an easily found abandonware. I have not included the
+setup or the entire installation tree. Instead, only the file sets that are
 actually required to compile XOSL are present, so if your goal is to grab a
 pristine version of the development tools, look for them on any abandonware
 sites.
@@ -55,23 +55,14 @@ unbootable.
 
 ### MBR Disk Signature preservation
 
-The XOSL installer was written before it became common practice to use the 6
-bytes starting at offset 440 of the MBR as a _disk signature_. As such, the
-installer expects to be able to install its boot code there. This result in
-other OSes being unable to boot properly after XOSL is installed because the
-disk signature they look for is no longer there. A patch was provided to
-shrink the IPL code to less than 440 byes so that it can fit the MBR without
-smashing the signature.
+The XOSL installer overwrites the 6 bytes starting at offset 440 of the MBR,
+the _disk signature_. This results in other OSes being unable to boot
+properly after XOSL is installed because the disk signature they look for is
+no longer there. A patch was provided to preserve its value when installing.
+This is also true when SBM is installed as part of the process.
 
 Have a look at the [Master Boot record Wikipedia
 page](https://en.wikipedia.org/wiki/Master_boot_record) for more details.
-
-For this to work, you _MUST NOT_ install Smart Boot Manager as part of XOSL
-installation: the fix only applies to the XOSL installer itself, but SBM
-still wipes out the disk signature. It could be possible to fix that too
-during installation, but it's too much work for a tool that is only meant to
-handle CD booting in an era where optical discs are fading away and
-BIOSes/UEFI firmwares handle that well enough.
 
 ## Build system
 
@@ -84,7 +75,7 @@ BIOSes/UEFI firmwares handle that well enough.
 
 The build is still based on a DOS environment and Borland C++ 3.1; in order
 to automate it the `/tools` subdirectory contains a copy of the abandonware
-Borland toolchain, plus some DosBox config files which maps the `src`,
+Borland toolchain, plus some DosBox config files which map the `src`,
 `tools` and `build` folders to drive letters and starts a build. There is
 also a bootable floppy image based on FreeDOS, which is used to produce a
 bootable XOSL install media as part of the build.
@@ -142,6 +133,6 @@ Improved version of XOSL. To build from source:
 * install Docker;
 * `cd $repository_root/docker`
 * `./build.sh`
-* grab `$repository_root/build/bootfloppy.img` and do what yuou want with it:
+* grab `$repository_root/build/bootfloppy.img` and do what you want with it:
   start it in an hypervisor, use it with Syslinux `memdisk`, or write it to a
   floppy.

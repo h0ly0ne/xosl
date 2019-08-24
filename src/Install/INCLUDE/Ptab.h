@@ -33,7 +33,13 @@ typedef struct {
 } TPartEntry;
 
 typedef struct {
-	char Reserved[PTABLE_OFFSET_IN_MBR];
+	unsigned long Signature;
+	unsigned short CopyProtected;
+} MBRSignature;
+
+typedef struct {
+	char Reserved[IPL_SIZE];
+	MBRSignature Signature;
 	TPartEntry Entries[4];
 	unsigned short MagicNumber; // 0xaa55
 } TPartTable;

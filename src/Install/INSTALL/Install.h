@@ -70,6 +70,8 @@ private:
 
 	void InstallSmartBootManager(int Drive);
 
+	int ReadSignature(int Drive, MBRSignature& sig);
+
 };
 
 #endif
