@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed
+
+* Version set to 1.1.6.
+
 ### Fixed
 
 * The IPL no longer overwrites the disk signature in the MBR.
@@ -21,3 +25,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 * DosBox based build system.
 * Dockerfile for build helper container.
+* Added contributor information.
