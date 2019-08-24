@@ -48,7 +48,7 @@ int CInstaller::Install(CVesa::TGraphicsMode GraphicsMode, CMouse::TMouseType Mo
 		return -1;
 	if (CreateBootItem() == -1)
 		return -1;
-	if (BackupOriginalMbr(0,XoslFiles.GetOriginalMbrName()) == -1)
+	if (BackupOriginalMbr(DosDrive.Drive,0,XoslFiles.GetOriginalMbrName()) == -1)
 		return -1; 
 
 	if (SmartBm) {
@@ -57,7 +57,7 @@ int CInstaller::Install(CVesa::TGraphicsMode GraphicsMode, CMouse::TMouseType Mo
 		}
 		InstallSmartBootManager(DosDrive.Drive);
 	}
-	if (BackupOriginalMbr(-1,XoslFiles.GetSmartBmName()) == -1) {
+	if (BackupOriginalMbr(DosDrive.Drive,-1,XoslFiles.GetSmartBmName()) == -1) {
 		return -1;
 	}
 
@@ -106,7 +106,7 @@ int CInstaller::Install(CVesa::TGraphicsMode GraphicsMode, CMouse::TMouseType Mo
 		return -1;
 	if (CreateBootItem() == -1)
 		return -1;
-	if (BackupOriginalMbr(Partition->FSType,XoslFiles.GetOriginalMbrName()) == -1)
+	if (BackupOriginalMbr(DosDrive.Drive,Partition->FSType,XoslFiles.GetOriginalMbrName()) == -1)
 		return -1;
 	
 	if (SmartBm) {
@@ -115,7 +115,7 @@ int CInstaller::Install(CVesa::TGraphicsMode GraphicsMode, CMouse::TMouseType Mo
 		}
 		InstallSmartBootManager(DosDrive.Drive);
 	}
-	if (BackupOriginalMbr(-1,XoslFiles.GetSmartBmName()) == -1) {
+	if (BackupOriginalMbr(DosDrive.Drive,-1,XoslFiles.GetSmartBmName()) == -1) {
 		return -1;
 	}
 
@@ -303,7 +303,7 @@ int CInstaller::CreateBootItem()
 	return 0;
 }
 
-int CInstaller::BackupOriginalMbr(int PartId, const char *DestFileName)
+int CInstaller::BackupOriginalMbr(int Drive, int PartId, const char *DestFileName)
 {
 	CDisk Disk;
 	unsigned short Mbr[256];
@@ -315,7 +315,7 @@ int CInstaller::BackupOriginalMbr(int PartId, const char *DestFileName)
 	else {
 		TextUI.OutputStr("Creating SBM loader...");
 	}
-	Disk.Map(0x80,0);
+	Disk.Map(Drive,0);
 	Disk.Read(0,Mbr,1);
 
 	if (PartId != -1) {

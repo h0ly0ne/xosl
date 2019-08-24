@@ -55,7 +55,7 @@ private:
 	int CreateXoslData(CVesa::TGraphicsMode GraphicsMode, CMouse::TMouseType MouseType);
 	int CreateBootItem();
 
-	int BackupOriginalMbr(int PartId, const char *DestFileName);
+	int BackupOriginalMbr(int Drive, int PartId, const char *DestFileName);
 	int BackupCurrentMbr(void *Ipl);
 	int BackupCurrentMbr(void *Ipl, int Drive, unsigned long StartSector);
 
