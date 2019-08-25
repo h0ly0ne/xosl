@@ -477,7 +477,7 @@ const char *SmartBmStatement =
 
 
 
-void CInstaller::InstallSmartBootManager(int /*Drive*/)
+void CInstaller::InstallSmartBootManager(int Drive)
 {
 	TextUI.ShowPopup(3,2,74,20,SmartBmStatement);
 	CKeyboard Keyboard;
@@ -485,9 +485,10 @@ void CInstaller::InstallSmartBootManager(int /*Drive*/)
 
 	LockScreen();
 	ClearScreen();
-
+	char DriveOpt[32];
+	sprintf(DriveOpt, "-d %d", Drive);
 	puts("Loading SBMINST.EXE...");
-	int Status = spawnl(P_WAIT,"SBMINST.EXE","SBMINST.EXE","-b sbmbckup.bin","-d 128",0);
+	int Status = spawnl(P_WAIT,"SBMINST.EXE","SBMINST.EXE","-b sbmbckup.bin",DriveOpt,0);
 
 	if (Status != -1) {
 		puts("\nPress any key to continue XOSL install...");
