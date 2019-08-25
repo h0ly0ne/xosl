@@ -2,6 +2,7 @@
 #include <Bypass.h>
 #include <disk.h>
 #include <text.h>
+#include <ipl.h>
 
 #include <fat16.h>
 #include <fat32.h>
@@ -101,7 +102,7 @@ void CBypass::Execute(const char *ErrorMsg)
 	for (Index = 0; Index < 4; ++Index) {
 		if (MBR.Table[Index].SectorCount) {
 			FSName = CPartList::GetFSName(MBR.Table[Index].FSType);
-			if (ReadVolumeLabel(0x80,MBR.Table[Index].StartSector,VolumeLabel) != -1) {
+			if (ReadVolumeLabel(XoslMountPart.Drive,MBR.Table[Index].StartSector,VolumeLabel) != -1) {
 				printf("%d - %s (%s)\n",Index + 1,FSName,VolumeLabel);
 			}
 			else {
@@ -124,7 +125,7 @@ void CBypass::ReadMBR()
 {
 	CDisk Disk;
 
-	Disk.Map(0x80,0);
+	Disk.Map(XoslMountPart.Drive,0);
 	Disk.Read(0,&MBR,1);
 }
 
@@ -197,7 +198,7 @@ void CBypass::RawBoot(int BootIndex)
 		for (Index = 0; Index < 4; ++Index)
 			MBR.Table[Index].Activated = 0;
 		MBR.Table[BootIndex].Activated = 0x80;
-		Disk.Map(0x80,0);
+		Disk.Map(XoslMountPart.Drive,0);
 		Disk.Write(0,&MBR,1);
 		Disk.Read(MBR.Table[BootIndex].StartSector,IPL_ADDR,1);
 	}
@@ -211,4 +212,3 @@ void CBypass::RawBoot(int BootIndex)
 	}
 	BootJump();
 }
-

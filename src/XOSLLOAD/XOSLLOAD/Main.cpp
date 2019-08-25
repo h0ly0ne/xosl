@@ -29,17 +29,6 @@
 
 #define Ipl ( (TFat16Ipl *)0x00007c00 )
 #define BootRecord ( (TBootFAT16 *)0x00007c00 )
-
-
-typedef struct {
-	int Drive;
-	int FSType;
-	long StartSector;
-} TMountPart;
-
-// address where XOSL expects to find which partition it is located on.
-#define XoslMountPart ( *(TMountPart *)0x00007c00 )
-
 // location to load the XOSL image files
 #define IMAGE_DESTADDR 0x20000000
 
@@ -70,6 +59,8 @@ _extern void CPPMain()
 	CFileSystem *FileSystem;
 	void *ImageData;
 	TExeHeader *ExeHeader = (TExeHeader *)&HeaderData[2];
+	// Call this as early as possible to get the boot drive
+	CreatePartition();
 
 	PutS("\r\nExtended Operating System Loader 1.1.6\r\n\n");
 	if (BypassRequest())
@@ -101,7 +92,6 @@ CFileSystem *MountFileSystem()
 {
 	CFileSystem *FileSystem;
 
-	CreatePartition();
 	switch (XoslMountPart.FSType) {
 		case 0x06:
 			FileSystem = new CFAT16;

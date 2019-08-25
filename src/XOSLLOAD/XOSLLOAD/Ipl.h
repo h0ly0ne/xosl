@@ -56,4 +56,12 @@ typedef struct {
 	unsigned short MagicNumber; // 0xaa55
 } TFat32Ipl;
 
+typedef struct {
+	int Drive;
+	int FSType;
+	long StartSector;
+} TMountPart;
+
+#define XoslMountPart ( *(TMountPart *)0x00007c00 )
+
 #endif
