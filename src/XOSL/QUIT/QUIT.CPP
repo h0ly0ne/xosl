@@ -13,6 +13,7 @@
 #include <mouse.h>
 #include <graph.h>
 #include <apm.h>
+#include <Ptab.h>
 
 #define AddrIpl ( (void *)0x00007c00 )
 #define IplJmp() (__emit__(0xea,0x00,0x7c,0x00,0x00)) // jmp 0000:7c00
@@ -36,7 +37,7 @@ void CQuit::Restart()
 	if (Mouse)
 		delete Mouse;
 	Graph->SetMode(modeText,false);
-	Disk.Map(0x80,0);
+	Disk.Map(MOUNT_PART.Drive,0);
 	Disk.Read(0,AddrIpl,1);
 	IplJmp();
 }

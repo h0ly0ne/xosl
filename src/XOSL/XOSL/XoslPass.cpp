@@ -111,11 +111,10 @@ void CXoslPassword::SetMBRPassword(unsigned long Code)
 	CDisk Disk;
 	CMBRPassword MBR;
 
-	Disk.Map(0x80,0);
+	Disk.Map(MOUNT_PART.Drive,0);
 	Disk.Read(0,&MBR,1);
 
 	MBR.Password = Code;
 
 	Disk.Write(0,&MBR,1);
 }
-

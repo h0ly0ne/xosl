@@ -154,12 +154,12 @@ int CBootItems::InitBoot(int BootIndex)
 		}
 	}
 
-	if (Partition->Type == PART_MBR && Partition->Drive == 0x80) {
+	if (Partition->Type == PART_MBR && Partition->Drive == MOUNT_PART.Drive) {
 		if (FileSystem.ReadFile(OriginalMbrFile,IPL_ADDR) <= 0)
 			return -1;
 		PartList.InsertMbrPTab(IPL_ADDR);
 	}
-	else if (Partition->Type == PART_SBM && Partition->Drive == 0x80) {
+	else if (Partition->Type == PART_SBM && Partition->Drive == MOUNT_PART.Drive) {
 		if (FileSystem.ReadFile(SmartMbLoaderFile,IPL_ADDR) <= 0)
 			return -1;
 		PartList.InsertMbrPTab(IPL_ADDR);
@@ -177,7 +177,7 @@ int CBootItems::InitBoot(int BootIndex)
 
 	if (BootItem->SwapDrives) {
 		DriveFix.SwapDrive(Partition->Drive);
-		DriveNum = 0x80;
+		DriveNum = MOUNT_PART.Drive;
 	}
 	else {
 		DriveNum = Partition->Drive;
@@ -216,7 +216,7 @@ bool CBootItems::CanSwap(int Index)
 	if (PartIndex >= ItemFile.PartCount) {
 		return false;
 	}
-	return PartList.GetPartition(PartIndex)->Drive > 0x80;
+	return PartList.GetPartition(PartIndex)->Drive != MOUNT_PART.Drive;
 }
 
 void CBootItems::MoveUp(int Index)
@@ -356,4 +356,3 @@ void CBootItems::UpdateHideList(unsigned char *HideList, int *RelocTable)
 	}
 	memcpy(HideList,NewHideList,sizeof (unsigned char[56]));
 }
-

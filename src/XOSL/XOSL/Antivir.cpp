@@ -77,7 +77,7 @@ void CAntiVirus::GetRealMBR(char *RealMBR)
 {
 	CDisk Disk;
 
-	Disk.Map(0x80,0);
+	Disk.Map(MOUNT_PART.Drive,0);
 	Disk.Read(0,RealMBR,1);
 }
 
@@ -95,7 +95,7 @@ void CAntiVirus::FixMBR(const char *DiskMBR)
 	CDisk Disk;
 	char MBR[512];
 
-	Disk.Map(0x80,0);
+	Disk.Map(MOUNT_PART.Drive,0);
 	Disk.Read(0,MBR,1);
 	memcpy(MBR,DiskMBR,IPL_SIZE);
 	Disk.Write(0,MBR,1);

@@ -55,26 +55,11 @@ long CoreLeft();
 
 /**/
 
-typedef struct {
-	int Drive;
-	int FSType;
-	long StartSector;
-} TMountPart;
 
-#ifndef DOS_DEBUG
-
-#define MOUNT_PART  ( *(const TMountPart *)0x00007c00 )
-
-#else
-
-//const TMountPart MOUNT_PART = {0x80,0x06,0x0031b600};
-
+#ifdef DOS_DEBUG
 const TMountPart MOUNT_PART = {0x80,0x06,0x00246c00};
-//const TMountPart MOUNT_PART = {0x80,0x06,0x005ffa40};
 static char *FileName = "dump_a.dmp";
-
-#endif
-
+#endif // DOS_DEBUG
 
 /**/
 

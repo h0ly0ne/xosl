@@ -118,6 +118,22 @@ class CPartList {
 
 };
 
+typedef struct {
+	int Drive;
+	int FSType;
+	long StartSector;
+} TMountPart;
+
+#ifndef DOS_DEBUG
+
+#define MOUNT_PART  ( *(const TMountPart *)0x00007c00 )
+
+#else
+
+extern TMountPart MOUNT_PART;
+
+#endif // DOS_DEBUG
+
 
 
 #endif

@@ -140,7 +140,7 @@ void CPartList::CreateNonPartNode(int Drive)
 	Partition->SectorCount = 0;
 	Partition->VolumeLabel = "";
 	if (Drive >= 0x80) {
-		if (Drive == 0x80)
+		if (Drive == MOUNT_PART.Drive)
 			Partition->FSName = "Original MBR";
 		else
 			Partition->FSName = "Master Boot Record";
@@ -151,7 +151,7 @@ void CPartList::CreateNonPartNode(int Drive)
 		Partition->FSName = "Smart Boot Manager";
 		Partition->FSType = -1;
 		Partition->Type = PART_SBM;
-		Partition->Drive = 0x80;
+		Partition->Drive = MOUNT_PART.Drive;
 		Partition->StartSector = PART_SBM;
 	}
 	else {
@@ -444,7 +444,7 @@ void CPartList::GetDiskPartIndex(int Index, int &Drive, int &PartIndex)
 		return;
 	}
 
-	Drive = 0x80;
+	Drive = MOUNT_PART.Drive;
 	PartIndex = -1;
 	Entry = PartList.begin();
 	do {

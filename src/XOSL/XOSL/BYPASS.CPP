@@ -44,7 +44,7 @@ void CBypass::Execute(const char *ErrorMsg)
 	for (Index = 0; Index < 4; ++Index) {
 		if (MBR.Entries[Index].SectorCount) {
 			FSName = CPartList::GetFSName(MBR.Entries[Index].FSType);
-			if (ReadVolumeLabel(0x80,MBR.Entries[Index].RelativeSector,VolumeLabel) != -1) {
+			if (ReadVolumeLabel(MOUNT_PART.Drive,MBR.Entries[Index].RelativeSector,VolumeLabel) != -1) {
 				printf("%d - %s (%s)\n",Index + 1,FSName,VolumeLabel);
 			}
 			else {
@@ -72,7 +72,7 @@ void CBypass::ReadMBR()
 {
 	CDisk Disk;
 
-	Disk.Map(0x80,0);
+	Disk.Map(MOUNT_PART.Drive,0);
 	Disk.Read(0,&MBR,1);
 }
 
@@ -145,7 +145,7 @@ void CBypass::RawBoot(int BootIndex)
 		for (Index = 0; Index < 4; ++Index)
 			MBR.Entries[Index].Activated = 0;
 		MBR.Entries[BootIndex].Activated = 0x80;
-		Disk.Map(0x80,0);
+		Disk.Map(MOUNT_PART.Drive,0);
 		Disk.Write(0,&MBR,1);
 		Disk.Read(MBR.Entries[BootIndex].RelativeSector,IPL_ADDR,1);
 	}
@@ -160,4 +160,3 @@ void CBypass::RawBoot(int BootIndex)
 	}
 	BootJump();
 }
-
