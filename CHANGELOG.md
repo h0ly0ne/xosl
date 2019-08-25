@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [v1.1.6] - 2019-08-25
+
 ### Changed
 
 * Version set to 1.1.6.
@@ -21,6 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * `EXESPLIT` sources fixed to add the required 2-byte header to the first
   segment.
 * The MBR signature will be preserved even if SBM is installed.
+* Replace hardwired references to drive 0x80 with the real boot drive.
 
 ### Added
 
