@@ -19,6 +19,9 @@ after_success:
       wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh &&
       bash upload.sh build/bootfloppy.img
 
+after_failure:
+    - '[ -e build/BUILD.LOG ] && cat build/BUILD.LOG'
+
 deploy:
   - on:
         branch: master
