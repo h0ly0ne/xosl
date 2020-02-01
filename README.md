@@ -1,5 +1,13 @@
 # A modern way to build XOSL, plus some nice fixes
 
+|       `travis`         |        `master`        |
+|:----------------------:|:----------------------:|
+| [![][ci_travis]][repo] | [![][ci_master]][repo] |
+
+[ci_travis]: https://travis-ci.com/binary-manu/xosl.svg?branch=travis
+[ci_master]: https://travis-ci.com/binary-manu/xosl.svg?branch=master
+[repo]:      https://travis-ci.com/binary-manu/xosl
+
 ## Intro
 
 This is a modified version of

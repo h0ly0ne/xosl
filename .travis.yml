@@ -1,0 +1,31 @@
+branches:
+    only:
+        - travis
+        - master
+
+os: linux
+distro: bionic
+language: generic
+services:
+    - docker
+
+script:
+    - ( cd docker && ./build.sh )
+
+after_success:
+    - cat build/BUILD.LOG
+    - >-
+      [ "$TRAVIS_BRANCH" = "travis" -a "$TRAVIS_EVENT_TYPE" != "cron" ] &&
+      wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh &&
+      bash upload.sh build/bootfloppy.img
+
+deploy:
+  - on:
+        branch: master
+        condition: '"$TRAVIS_EVENT_TYPE" != "cron"'
+        tags: true
+    provider: releases
+    file: build/bootfloppy.img 
+    skip_cleanup: true
+    api_key:
+      secure: "Urz9wp3etA7UofVo3/EZN/kdhCCh0VEoeaEyDKLEIo/iJqUwVa/hT1zme0sUocm5t0gWiRMPM0qPb25cR1LzC+LKhHx/SmstxgkHVj4RLrmU9l+SJ3ysXv35MEidUbFsHllxRpor67Wvl5G28IJMp7CnvxfKOT17UuUo3Liwh+pn0QDp9vrPZA/9pdtfwejIq+OMm1h3/1bDwZLukHVDTm6jNTaue0EzfSG5iY4au+stWNVDFKK1xotLE7Txvl538iyXSJx60P3SO63Fjn7uzCD3sdgFpsEU2rYdDwmFXtdVap1QYFk0n1uSXcYCLG88CdXGNFIj0nX4TAZsmR0DOy9Lr+iMcEMZSXqVjCsChubHDpcBVPih5Mi0aP5uS3hcg2gLMAFf4JaWCKIEMTxIWupYmJZ0xDZYTwiqBSrMLbwlOr2MC8XfoCazQHnCdvN30Ai1w3nDUJsHzMBzPd+VpYJ40GgZP1og55lYPWBLHgFW338F7s+GPC1jp7r/OketkXexvcX2JV2/M2sQgR/f1K/XkqMxQDGup3xY5saR2aRSMiG8wl6SxhceLhtfPhiu/puXdNQbdv4rvdVb8yBRISIBYs51a4kJf6scRubv1EZFBbCxb0bbIzWqU/5CrspmkJKFiG8fpFWYZ9p1gcOpJHf/bWi3N2WAR3RgHWPbr8Y="
