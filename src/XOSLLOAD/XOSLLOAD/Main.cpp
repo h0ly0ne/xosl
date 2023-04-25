@@ -30,7 +30,7 @@
 #define Ipl ( (TFat16Ipl *)0x00007c00 )
 #define BootRecord ( (TBootFAT16 *)0x00007c00 )
 // location to load the XOSL image files
-#define IMAGE_DESTADDR 0x20000000
+#define IMAGE_DESTADDR 0x30000000
 
 #define IMAGE_NAME "XOSLIMG0XXF"
 

@@ -21,7 +21,7 @@
 		.startup
 		call 	_EnableA20
 
-                push    dword ptr 50000000h
+                push    dword ptr 60000000h
                 call    @AllocInit$qul
                 pop     eax
                 call    _main

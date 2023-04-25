@@ -15,7 +15,7 @@
                 extrn   _CPPMain: near
 
 		.startup
-                push    dword ptr 50000000h
+                push    dword ptr 60000000h
                 call    _AllocInit
                 pop     eax
 
