@@ -24,7 +24,7 @@ int CXoslFiles::GetCount()
 	if (!IgnoreRPM) {
 		return FileCount;
 	}
-	return FileCount - 2;
+	return FileCount - 3;
 }
 
 const char *CXoslFiles::GetFileName(int Index)
@@ -87,7 +87,7 @@ const char *CXoslFiles::FileList[] = {
 	"DEFAULT.XFF","EXTRA.XFF",
 	"ORIG_MBR.XCF","CURR_MBR.XCF","SBM_IPL0.XCF",
 	"BOOTITEM.XDF","XOSLDATA.XDF",
-	"XRPART00.XXF","XRPART01.XXF"
+	"XRPART00.XXF","XRPART01.XXF","XRPART02.XXF"
 };
 
 const int CXoslFiles::FileCount = sizeof (FileList) / sizeof (char *);

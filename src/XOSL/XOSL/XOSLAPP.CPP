@@ -618,6 +618,7 @@ void CApplication::StartPart()
 {
 	void *Ptr1 = (void *)0x10000000;
 	void *Ptr2 = (void *)0x18000000;
+	void *Ptr3 = (void *)0x20000000;
 
 
 	if (FileSystem->ReadFile("XRPART00XXF",Ptr1) != 32768) {
@@ -630,6 +631,10 @@ void CApplication::StartPart()
 
 	if (  FileSystem->ReadFile("XRPART01XXF",Ptr2) != 32768) {
 		CriticalError("\r\nError loading XRPART01XXF\r\n");
+	}
+
+	if (  FileSystem->ReadFile("XRPART02XXF",Ptr3) != 32768) {
+		CriticalError("\r\nError loading XRPART02XXF\r\n");
 	}
 
 	DestroyApplication();
