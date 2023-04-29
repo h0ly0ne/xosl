@@ -15,7 +15,7 @@ void printf(const char *,...);
 extern unsigned char *SplashLogo;
 
 static const char *StrXoslTitle = "Extended Operating System Loader";
-static const char *StrCopyright = "\xa9 2000 Geurt Vos, 2019 E. Giacomelli";
+static const char *StrCopyright = "\xa9 2000 Geurt Vos, 2023 E. Giacomelli";
 static const char *StrHttpXosl = "github.com/binary-manu/xosl";
 
 
