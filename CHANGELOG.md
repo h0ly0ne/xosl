@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [v1.1.7] - 2023-04-29
+
+### Changed
+
+* Memory layout updated to allow for RPM to grow up to 128kB.
+* RPM updated to v2.46 from https://github.com/binary-manu/rpm
+
 ## [v1.1.6] - 2019-08-25
 
 ### Changed
