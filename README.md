@@ -72,6 +72,15 @@ This is also true when SBM is installed as part of the process.
 Have a look at the [Master Boot record Wikipedia
 page](https://en.wikipedia.org/wiki/Master_boot_record) for more details.
 
+### More space to load RPM
+
+My other project about [Ranish Partition Manager][rpm] requires more than 64kB
+of space for the final executable. XOSL expects RPM to fit into 64 kB. The XOSL
+load address, as well as the memory pool for new/delete has been moved up in the
+address space to allow RPM to grow up to 128kB.
+
+The current latest build embeds my own build of RPM 2.46.
+
 ## Build system
 
      .              # Repository root
@@ -134,6 +143,38 @@ There is an even simpler way: use `docker/build.sh`. This script will:
 
 `build.sh` expects to be called from the `docker` folder.
 
+## XOSL memory layout
+
+An approximated memory map for the various stages of XOSL follow. All addresses
+are linear, not segmented.  _Approximated_ here means that sizes have been
+rounded up to sensible values in order to be easier to read and/or adhere to
+hardwired limits in the code (ex. an image which can grow up to 8kB but is just
+a little bit smaller has been rounded to 8kB).
+
+### IPL
+
+| Segment    | Start (incl.) | End (excl.) |
+|:-----------|:-------------:|:-----------:|
+| Code+Data  | 0x7C00        | 0x7E00      |
+| Stack      | 0x7B00        | 0x17B00     |
+
+### XOSLLOAD
+
+| Segment    | Start (incl.) | End (excl.) |
+|:-----------|:-------------:|:-----------:|
+| Code+Data  | 0x80100       | 0x82100     |
+| BSS        | 0x82100       | 0x8A100     |
+| Stack      | 0x80100       | 0x90100     |
+| Allocator  | 0x60000       | 0xA0000     |
+
+### XOSL
+
+| Segment              | Start (incl.) | End (excl.) |
+|:---------------------|:-------------:|:-----------:|
+| Ranish PM Load Area  | 0x10000       | 0x30000     |
+| Code+Data+Stack+BSS  | 0x30000       | 0x60000     |
+| Allocator            | 0x60000       | 0xA0000     |
+
 ## TL;DR
 
 Improved version of XOSL. To build from source:
@@ -144,3 +185,5 @@ Improved version of XOSL. To build from source:
 * grab `$repository_root/build/bootfloppy.img` and do what you want with it:
   start it in an hypervisor, use it with Syslinux `memdisk`, or write it to a
   floppy.
+
+[rpm]: https://github.com/binary-manu/rpm
