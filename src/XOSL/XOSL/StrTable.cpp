@@ -3,7 +3,7 @@
 
 CLoaderStringTable CXoslStringTable::Loader = {
 	"Extended Operating System Loader",
-	"XOSL version 1.1.6",
+	"XOSL version 1.1.7",
 	"\xa9 2000 Geurt Vos, 2019 E. Giacomelli",
 	"github.com/binary-manu/xosl",
 	"Choose OS",

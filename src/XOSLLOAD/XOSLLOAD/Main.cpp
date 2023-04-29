@@ -62,7 +62,7 @@ _extern void CPPMain()
 	// Call this as early as possible to get the boot drive
 	CreatePartition();
 
-	PutS("\r\nExtended Operating System Loader 1.1.6\r\n\n");
+	PutS("\r\nExtended Operating System Loader 1.1.7\r\n\n");
 	if (BypassRequest())
 		CriticalError(NULL);
 

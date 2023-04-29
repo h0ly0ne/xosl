@@ -13,7 +13,7 @@
 #include <rgb.h>
 #include <cstring.h>
 
-static const char *Title = "Extended Operating System Loader 1.1.6";
+static const char *Title = "Extended Operating System Loader 1.1.7";
 static const char *SubTitle = "with Ranish Partition Manager 2.38 Beta 1.9";
 
 CBackground::CBackground()

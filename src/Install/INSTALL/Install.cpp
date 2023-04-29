@@ -98,7 +98,7 @@ int CInstaller::Install(CVesa::TGraphicsMode GraphicsMode, CMouse::TMouseType Mo
 	DosDrive.StartSector = Partition->StartSector;
 
 	if (Partition->SectorCount < 800) {
-		TextUI.OutputStr("XOSL 1.1.6 requires a partition of\nat least 400kb\n\n");
+		TextUI.OutputStr("XOSL 1.1.7 requires a partition of\nat least 400kb\n\n");
 		return -1;
 	}
 		
