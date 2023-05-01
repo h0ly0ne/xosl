@@ -8,16 +8,18 @@ LINK=$(MAKEDIR)\tlink $(LINK_OPTIONS)
 
 split.exe: starter.obj split.obj io.obj
         $(LINK) starter split io, split.exe
+        copy split.exe split.org
+        pklite split.exe
 
 clean:
         @del *.obj
         @del *.bak
         @del *.map
         @del *.exe
+        @del *.org
 
 .c.obj:
         $(C) $<
 
 .asm.obj:
         $(ASM) $<
-

@@ -29,12 +29,16 @@ $(LNK_FILE): install io mouse vesa ui keyboard text string
    $(LINK) @&&!
          $(LINK_OPTIONS) $(OBJ_FILES), $(LNK_FILE), $(MAP_FILE), $(LIB_FILES)
 !
+   copy install.exe install.org
+   pklite install.exe
+
 
 link:
    $(LINK) @&&!
          $(LINK_OPTIONS) $(OBJ_FILES), $(LNK_FILE), $(MAP_FILE), $(LIB_FILES)
 !
-
+   copy install.exe install.org
+   pklite install.exe
 
 install:
    $(ENTER) install
@@ -86,7 +90,6 @@ text:
    $(MAKE)
    $(LEAVE)
 
-
 clean:
    $(ENTER) install
    $(MAKEDIR)\make clean
@@ -110,5 +113,5 @@ clean:
    $(MAKEDIR)\make clean
    $(LEAVE)
    @del install.exe
+   @del install.org
    @del install.map
-

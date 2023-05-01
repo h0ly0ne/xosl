@@ -620,26 +620,34 @@ void CApplication::StartPart()
 	void *Ptr2 = (void *)0x18000000;
 	void *Ptr3 = (void *)0x20000000;
 
+	Graph->SetMode(modeText,false);
 
 	if (FileSystem->ReadFile("XRPART00XXF",Ptr1) != 32768) {
+		puts("\r\nError loading XRPART00XXF\r\n");
 		Dialogs->ShowMessageDialog(NULL,"Ranish Partition Manager","Either Ranish Partition Manager is not installed, or its files are missing");
+		CriticalError("\r\nError loading XRPART00XXF\r\n");
+		return;
+	}
+	
+	if (FileSystem->ReadFile("XRPART01XXF",Ptr2) != 32768) {
+		puts("\r\nError loading XRPART01XXF\r\n");
+		Dialogs->ShowMessageDialog(NULL,"Ranish Partition Manager","Either Ranish Partition Manager is not installed, or its files are missing");
+		CriticalError("\r\nError loading XRPART01XXF\r\n");
 		return;
 	}
 
-	Graph->SetMode(modeText,false);
-	puts("\nStarting Ranish Partition Manager...");
-
-	if (  FileSystem->ReadFile("XRPART01XXF",Ptr2) != 32768) {
-		CriticalError("\r\nError loading XRPART01XXF\r\n");
-	}
-
-	if (  FileSystem->ReadFile("XRPART02XXF",Ptr3) != 32768) {
+	if (FileSystem->ReadFile("XRPART02XXF",Ptr3) != 14276) {
+		puts("\r\nError loading XRPART02XXF\r\n");
+		Dialogs->ShowMessageDialog(NULL,"Ranish Partition Manager","Either Ranish Partition Manager is not installed, or its files are missing");
 		CriticalError("\r\nError loading XRPART02XXF\r\n");
+		return;
 	}
-
+	
 	DestroyApplication();
 	FinalizeCore();
 	DestroyCoreClasses();
+
+	puts("\r\nStarting Ranish Partition Manager...");
 
 	asm {
 		xor	ax,ax
@@ -648,7 +656,6 @@ void CApplication::StartPart()
 	    push 0x0200
 		retf
 	}
-
 }
 
 void CApplication::PartPwdProc(CApplication &Application, const char *Password)

@@ -1,3 +1,0 @@
-The license was moved under the top of the repository.
-
-See LICENSE.

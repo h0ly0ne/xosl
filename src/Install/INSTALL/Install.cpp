@@ -456,7 +456,7 @@ void CInstaller::SetPartId(int PartIndex, int PartId)
 
 
 const char *SmartBmStatement =
-"XOSL INSTALL UTILITY will now install Smart Boot Manager 3.6.4.\n"
+"XOSL INSTALL UTILITY will now install Smart Boot Manager 3.7.1.\n"
 "\n"
 "* XOSL uses Smart Boot Manager (SBM) to provide CD-ROM booting support.\n"
 "* To install SBM, sbminst.exe will be used. Because of this, XOSL \n"

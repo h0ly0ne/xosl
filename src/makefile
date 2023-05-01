@@ -5,12 +5,11 @@ LEAVE=$(ENTER) ..
 COPY=copy
 DELETE=del
 
-all: build arch
+all: build release
 
 #------------------------- BUILD ------------------------- #
 
 build: xosl xoslload install ipl
-
 
 xosl: exesplit
     $(ENTER) xosl
@@ -43,20 +42,30 @@ ipl:
     $(LEAVE)
     $(LEAVE)
 
-#------------------------- ARCHIVE ------------------------- #
+#------------------------- RELEASE ------------------------- #
 
-arch:
-    $(COPY) xosl\*.xxf arch
-    $(COPY) xoslload\xoslload.xcf arch
-    $(COPY) install\install.exe arch
-    $(COPY) ipl\ipl_brec\*.bin arch
-    $(COPY) ipl\ipl_mbr\*.bin arch
-    $(COPY) resource\*.* arch
+release:
+    $(COPY) "xosl\*.xxf" "D:\"
+    $(COPY) "xoslload\xoslload.xcf" "D:\"
+    $(COPY) "install\install.exe" "D:\"
+    $(COPY) "ipl\ipl_brec\*.bin" "D:\"
+    $(COPY) "ipl\ipl_mbr\*.bin" "D:\"
+    $(COPY) "resource\*.*" "D:\"
 
 #------------------------- CLEAN ------------------------- #
 
-clean: clean_xosl clean_xoslload clean_install clean_ipl clean_arch clean_exesplit
+clean: clean_release clean_xosl clean_xoslload clean_install clean_ipl clean_exesplit
 
+clean_release:
+    $(DELETE) "D:\*.xxf"
+    $(DELETE) "D:\*.xcf"
+    $(DELETE) "D:\*.xff"
+    $(DELETE) "D:\*.xbf"
+    $(DELETE) "D:\*.exe"
+    $(DELETE) "D:\*.bin"
+    $(DELETE) "D:\*.mbr"
+    $(DELETE) "D:\*.txt"
+    $(LEAVE)
 
 clean_xosl:
     $(ENTER) xosl
@@ -82,18 +91,6 @@ clean_ipl:
     $(ENTER) ipl_mbr
     $(MAKEDIR)\make clean
     $(LEAVE)
-    $(LEAVE)
-
-clean_arch:
-    $(ENTER) arch
-    $(DELETE) *.xxf
-    $(DELETE) *.xcf
-    $(DELETE) *.xff
-    $(DELETE) *.xbf
-    $(DELETE) *.exe
-    $(DELETE) *.bin
-    $(DELETE) *.mbr
-    $(DELETE) *.txt
     $(LEAVE)
 
 clean_exesplit:

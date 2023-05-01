@@ -284,7 +284,7 @@ public:
 	bool SpecialKey;
 };
 
-CKeyDesc USKeyList[] =  {
+CKeyDesc EnglishKeyList[] =  {
 	{0x011b,0x011b,"Escape","esc",true},
 	{0x3b00,0x3b00,"F1","F1",true},
 	{0x3c00,0x3c00,"F2","F2",true},

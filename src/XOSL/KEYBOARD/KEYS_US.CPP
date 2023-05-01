@@ -1,6 +1,6 @@
 #include <key.h>
 
-const CKeyDesc CKeyboard::USKeyList[KEY_COUNT] = {
+const CKeyDesc CKeyboard::EnglishKeyList[KEY_COUNT] = {
 	{0x0100,0x0100,"Alt-Escape","Aesc",true},
 	{0x011b,0x011b,"Escape","esc",true},
 	{0x0221,0x0221,"!","!",false},

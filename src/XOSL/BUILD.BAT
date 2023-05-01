@@ -1,1 +1,0 @@
-make -DDOS_DEBUG

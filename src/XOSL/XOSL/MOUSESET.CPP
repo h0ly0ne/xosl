@@ -58,7 +58,6 @@ void CMouseSettings::InitializeControls(CTabControl *TabControl)
 	TabControl->AddControl(2,LayoutList);
 	TabControl->AddControl(2,EnhKeyboard);
 
-
 	MouseBox->AddItem("Serial COM1");
 	MouseBox->AddItem("Serial COM2");
 	MouseBox->AddItem("Serial COM3");
@@ -67,8 +66,8 @@ void CMouseSettings::InitializeControls(CTabControl *TabControl)
 	MouseBox->AddItem("None");
 
 	LayoutList->AddItem("French");
-	LayoutList->AddItem("United States");
-
+	LayoutList->AddItem("English");
+    LayoutList->AddItem("German");
 }
 
 void CMouseSettings::ConnectEventHandlers()
@@ -107,8 +106,11 @@ void CMouseSettings::InitKbdLayout(int Layout)
 		case CKeyboard::enumLayoutFrench:
 			Index = 0;
 			break;
-		case CKeyboard::enumLayoutUS:
+		case CKeyboard::enumLayoutEnglish:
 			Index = 1;
+			break;
+		case CKeyboard::enumLayoutGerman:
+			Index = 2;
 			break;
 		default:
 			Index = 1;
@@ -121,8 +123,6 @@ void CMouseSettings::InitKbdLayout(int Layout)
 	else {
 		KbdLayoutSelect(*this,Index);
 	}
-
-
 }
 
 void CMouseSettings::InstallControls(CForm *Form)
@@ -234,7 +234,10 @@ void CMouseSettings::KbdLayoutSelect(CMouseSettings &MouseSettings, int ItemInde
 			Layout = CKeyboard::enumLayoutFrench;
 			break;
 		case 1: // US
-			Layout = CKeyboard::enumLayoutUS;
+			Layout = CKeyboard::enumLayoutEnglish;
+			break;
+		case 2: // US
+			Layout = CKeyboard::enumLayoutGerman;
 			break;
 		default:
 			return;

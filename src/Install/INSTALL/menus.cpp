@@ -107,7 +107,7 @@ void CInstallMenus::InitInstFatMenu(CTextList::TListItemExecute MenuHandler, voi
 	TextUI.AddMenuItem(1,"Mouse type","Initial mouse type",1,MouseTypeCount,MouseTypeNames,1);
 	TextUI.AddMenuItem(2,"Install on drive","Drive to install XOSL on",1,DosDriveCount,(const char **)DosDriveList,1);
 	TextUI.AddMenuItem(3,"Ranish Partition Manager","Install Ranish Partition Manager 2.46 together with XOSL 1.1.7",1,2,YesNoList,1);
-	TextUI.AddMenuItem(4,"Smart Boot Manager","Install Smart Boot Manager 3.6.4 for CD-ROM booting support.",1,2,YesNoList,1);
+	TextUI.AddMenuItem(4,"Smart Boot Manager","Install Smart Boot Manager 3.7.1 for CD-ROM booting support.",1,2,YesNoList,1);
 
 	TextUI.AddMenuItem(6,"Start installation","Install Extended Operating System Loader 1.1.7",1);
 	TextUI.AddMenuItem(8,"Return to install menu","Return to install menu",1);
@@ -132,7 +132,7 @@ void CInstallMenus::InitInstSepMenu(CTextList::TListItemExecute MenuHandler, voi
 	TextUI.AddMenuItem(0,"Video mode","Initial video mode",1,ModeCount,ModeNameList,1);
 	TextUI.AddMenuItem(1,"Mouse type","Initial mouse type",1,MouseTypeCount,MouseTypeNames,1);
 	TextUI.AddMenuItem(2,"Ranish Partition Manager","Install Ranish Partition Manager 2.46 together with XOSL 1.1.7",1,2,YesNoList,1);
-	TextUI.AddMenuItem(3,"Smart Boot Manager","Install Smart Boot Manager 3.6.4 for CD-ROM booting support.",1,2,YesNoList,1);
+	TextUI.AddMenuItem(3,"Smart Boot Manager","Install Smart Boot Manager 3.7.1 for CD-ROM booting support.",1,2,YesNoList,1);
 	TextUI.AddMenuItem(4,"Drv Type System              Size ","Partition to install XOSL 1.1.7 on",1,PartNameCount,(const char **)PartNameList,0);
 	TextUI.AddMenuItem(10,"Start installation","Install Extended Operating System Loader 1.1.7",1);
 	TextUI.AddMenuItem(11,"Return to install menu","Return to install menu",1);

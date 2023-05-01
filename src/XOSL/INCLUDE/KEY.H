@@ -74,7 +74,7 @@ public:
 	CKeyboard();
 	~CKeyboard();
 
-	enum TKeyLayout { enumLayoutUS = 0, enumLayoutFrench = 1};
+	enum TKeyLayout { enumLayoutEnglish = 0, enumLayoutFrench = 1, enumLayoutGerman = 2};
 	
 	static unsigned short WaitKeyStroke();
 	static void StoreKeyStroke(unsigned short KeyCode);
@@ -89,8 +89,9 @@ public:
 	static unsigned short GetKeyCode(unsigned short NewKeyCode);
 	static bool IsSpecialKey(unsigned short KeyCode);
 private:
-	static const CKeyDesc USKeyList[KEY_COUNT];
+	static const CKeyDesc EnglishKeyList[KEY_COUNT];
 	static const CKeyDesc FrenchKeyList[KEY_COUNT];
+	static const CKeyDesc GermanKeyList[KEY_COUNT];
 
 	static const CKeyDesc *SelectedLayout;
 

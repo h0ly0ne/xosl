@@ -13,8 +13,8 @@
 #include <search.hpp>
 #include <string.h>
 
-// US keyboard layout is the default
-const CKeyDesc *CKeyboard::SelectedLayout = CKeyboard::USKeyList;
+// English keyboard layout is the default
+const CKeyDesc *CKeyboard::SelectedLayout = CKeyboard::EnglishKeyList;
 //CKeyDesc *CKeyboard::Current = &CKeyboard::SelectedLayout[0];
 
 bool CKeyboard::EnhancedSupport = false;
@@ -57,11 +57,14 @@ void CKeyboard::SetEnhancedSupport(bool Status)
 void CKeyboard::SelectLayout(TKeyLayout KeyLayout)
 {
 	switch (KeyLayout) {
-		case enumLayoutUS:
-			SelectedLayout = USKeyList; // qwerty
+		case enumLayoutEnglish:
+			SelectedLayout = EnglishKeyList; // qwerty
 			break;
 		case enumLayoutFrench:
 			SelectedLayout = FrenchKeyList; // azerty
+			break;
+		case enumLayoutGerman:
+			SelectedLayout = GermanKeyList; // qwertz
 			break;
 		default:
 			break;

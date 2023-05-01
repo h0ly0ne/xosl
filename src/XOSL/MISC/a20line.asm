@@ -1,4 +1,4 @@
-; EnableA20/DisableA20 code is take from Ranish Partition Manager 2.38 Beta 1.9
+; EnableA20/DisableA20 code is take from Ranish Partition Manager 2.46
 		.code
 		
 ;		public	_EnableA20

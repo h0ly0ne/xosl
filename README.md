@@ -1,13 +1,5 @@
 # A modern way to build XOSL, plus some nice fixes
 
-|       `travis`         |        `master`        |
-|:----------------------:|:----------------------:|
-| [![][ci_travis]][repo] | [![][ci_master]][repo] |
-
-[ci_travis]: https://travis-ci.com/binary-manu/xosl.svg?branch=travis
-[ci_master]: https://travis-ci.com/binary-manu/xosl.svg?branch=master
-[repo]:      https://travis-ci.com/binary-manu/xosl
-
 ## Intro
 
 This is a modified version of
@@ -24,7 +16,7 @@ The goals of this project are:
 ## Easy compilation
 
 The Borland C++ environment is a DOS tool. As such, it can only be run under
-a DOS environment. However, thanks to [DosBox](https://www.dosbox.com/)
+a DOS environment. However, thanks to [DOSBox-X](https://www.dosbox-x.com/)
 it is quite easy to setup a fully working DOS environment.
 
 The Borland C++ tools are included with the sources: they take up a few MiB
@@ -33,11 +25,6 @@ setup or the entire installation tree. Instead, only the file sets that are
 actually required to compile XOSL are present, so if your goal is to grab a
 pristine version of the development tools, look for them on any abandonware
 sites.
-
-To make things more streamlined, a Dockerfile is provided which can be used
-to build a container image containing DosBox, GNU make and the other tools
-which are required for a build. So, in the end, in order to build XOSL from
-the sources you only actually need Docker installed.
 
 ## Fixes
 
@@ -83,65 +70,64 @@ The current latest build embeds my own build of RPM 2.46.
 
 ## Build system
 
-     .              # Repository root
-     ├── Makefile
-     ├── build/     # Empty dir for artifacts
-     ├── docker/    # Dockerfile for the helper container
-     ├── src/       # XOSL sources
-     └── tools/     # Borland C++ and DosBox config files
+    .
+    ├── build/
+    ├── src/
+    ├── tools/
+    ├── CHANGELOG.md
+    ├── LICENSE.txt
+    └── README.md
 
-The build is still based on a DOS environment and Borland C++ 3.1; in order
-to automate it the `/tools` subdirectory contains a copy of the abandonware
-Borland toolchain, plus some DosBox config files which map the `src`,
-`tools` and `build` folders to drive letters and starts a build. There is
-also a bootable floppy image based on FreeDOS, which is used to produce a
-bootable XOSL install media as part of the build.
+`build` contains files needed to build and the final output of the build system
+and ancillary tools.
 
-The build process is driven by the `Makefile` and run under DosBox without
-graphical output. Instead, the following information are recorder for later
-inspection:
+`src` contains the source code and the Makefiles to build it. The build system
+is in-tree, so all object files and output artifacts will be placed here.
 
-* `build/RESULT` contains `0` if the build was successful and `1` otherwise;
-* `build/BUILD.LOG` contains the output produced by the Borland `make` tool.
+`tools` contains a (partial) copy of the Borland C++ 3.1 toolchain and the
+other required components.
+
+While compiling, the output from the various tools (Assembler, compiler, linker
+and so on) will be written to `build/BUILD.LOG`. Important information, like
+errors in source files, will be logged in there too.
 
 Artifacts are also stored under `build`:
 
-* `build/xosl-files` contains a copy of every produced file, including the
+* `build` contains a copy of every produced file, including the
   installer. This is what you may want to copy to produce an installer media;
-* `build/bootfloppy.img` is a bootable floppy image based on FreeDOS, onto
+* `build/BOOTFL.IMG` is a bootable floppy image based on FreeDOS, onto
   which the installer just built has been copied. If you are looking for a
   bootable installer media to use with Syslinux or to mount in a VM, this is
   the fastest way to get one. The XOSL installer is found under `XOSL` on the
   floppy.
+* `build/BOOTFLRD.IMG` is a bootable floppy image based on most recent
+  FreeDOS, onto which the installer just built has been copied. In addition
+  the startup process of the INSTALLER.EXE was automated on floppy boot -
+  including the creation and usage of a ramdrive to get over the storage limit
+  that is a problem when you install SBM+RPM in combination with XOSL. Please
+  keep in mind that data on the ramdrive WILL NOT PRESERVED on reboot - so if
+  you have some valuable data on your XOSL partition/disk keep this in mind.
 
-If you are planning to build on your host Linux system, the following
-dependencies must be installed for:
+For convenience, there is a clean `build/clean.ps1` (for cleanup environment)
+and a build powershell script `build/build.ps1` which take care of building
+RPM.
 
-* GNU mtools
-* GNU make
-* DosBox
+These scripts require the most recent [Microsoft PowerShell-Framework (7.3)](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.3#msi) installed (x64 or x86)
+on the host machine. 
 
-However, it is easier to just use the helper Docker container. There is a
-`docker/Dockerfile` file which will build a container, based on Arch Linux,
-with DosBox and the other tools already installed. Once built, it can be run
-by passing the build command as the command to execute, which defaults to
-`make`. The repository root must be bound to `/build` within the container,
-For example:
+To build XOSL, simply run:
 
-     docker run -it --rm -v /home/user/xosl:/build $builder_name            # Runs `make`
-     docker run -it --rm -v /home/user/xosl:/build $builder_name make clean # Clean everything
+    cd build
+    ./build.ps1
 
-There is an even simpler way: use `docker/build.sh`. This script will:
+To clean the working directories, run:
 
-* build the container, naming it `xosl-borlandc-builder`, if it does not exist;
-* run the container by binding the repositoy under the expected mountpoint and
-  passing all its arguments to the run invocation. So the previous examples
-  becomes:
+    cd build
+    ./clean.ps1
 
-          ./build.sh            # Runs `make`
-          ./build.sh make clean # Clean everything
-
-`build.sh` expects to be called from the `docker` folder.
+Keep in mind that these script may have to download the required 3rd party
+components and tools to complete the building environment. Depending on your
+connection, this may take some time and some MiB's of space.
 
 ## XOSL memory layout
 
@@ -175,15 +161,14 @@ a little bit smaller has been rounded to 8kB).
 | Code+Data+Stack+BSS  | 0x30000       | 0x60000     |
 | Allocator            | 0x60000       | 0xA0000     |
 
-## TL;DR
+### Building tools
 
-Improved version of XOSL. To build from source:
-
-* install Docker;
-* `cd $repository_root/docker`
-* `./build.sh`
-* grab `$repository_root/build/bootfloppy.img` and do what you want with it:
-  start it in an hypervisor, use it with Syslinux `memdisk`, or write it to a
-  floppy.
+`Borland C++  Version 3.1 Copyright (c) 1992 Borland International`<br />
+`DPMI Loader Version 1.0  Copyright (c) 1990, 1991 Borland International`<br />
+`MAKE Version 3.6  Copyright (c) 1992 Borland International`<br />
+`Turbo Assembler  Version 3.1  Copyright (c) 1988, 1992 Borland International`<br />
+`TLIB 3.02 Copyright (c) 1992 Borland International`<br />
+`Turbo Link  Version 5.1 Copyright (c) 1992 Borland International`<br />
 
 [rpm]: https://github.com/binary-manu/rpm
+<!-- vi: set fo=crotn et sts=-1 sw=4 :-->
