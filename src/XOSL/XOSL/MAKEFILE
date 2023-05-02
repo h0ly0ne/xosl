@@ -3,20 +3,19 @@
 #
 
 COMPILE_OBJ=xoslmain.obj xoslapp.obj loader.obj setup.obj bootkeys.obj \
-            prefer.obj general.obj password.obj \
-            about.obj dialogs.obj xosldata.obj items.obj lastconf.obj \
-            encpwd.obj fatfix.obj drvswap.obj part.obj hide.obj \
-            graphset.obj colorset.obj mouseset.obj xoslpass.obj misc.obj \
-            default.obj antivir.obj bypass.obj strtable.obj
+            prefer.obj general.obj password.obj about.obj dialogs.obj \
+            xosldata.obj items.obj lastconf.obj encpwd.obj fatfix.obj \
+            drvswap.obj part.obj hide.obj graphset.obj colorset.obj \
+            mouseset.obj xoslpass.obj misc.obj default.obj antivir.obj \
+            bypass.obj strtable.obj
 LIB_NAME=xosl.lib
 LIST_FILE=xosl.lst
-LIB_OBJ=-+xoslmain.obj -+xoslapp.obj -+loader.obj -+setup.obj \
-        -+bootkeys.obj -+prefer.obj -+general.obj -+password.obj \
-        -+about.obj -+dialogs.obj -+xosldata.obj -+items.obj -+lastconf.obj \
-        -+encpwd.obj -+fatfix.obj -+drvswap.obj -+part.obj \
-        -+hide.obj -+graphset.obj -+colorset.obj -+mouseset.obj \
-        -+xoslpass.obj -+misc.obj -+default.obj -+antivir.obj -+bypass.obj \
-        -+strtable.obj
+LIB_OBJ= -+xoslmain.obj -+xoslapp.obj -+loader.obj -+setup.obj -+bootkeys.obj \
+         -+prefer.obj -+general.obj -+password.obj -+about.obj -+dialogs.obj \
+         -+xosldata.obj -+items.obj -+lastconf.obj -+encpwd.obj -+fatfix.obj \
+         -+drvswap.obj -+part.obj -+hide.obj -+graphset.obj -+colorset.obj  \
+         -+mouseset.obj -+xoslpass.obj -+misc.obj -+default.obj -+antivir.obj \
+         -+bypass.obj -+strtable.obj
 
 #
 # Generic library stuff

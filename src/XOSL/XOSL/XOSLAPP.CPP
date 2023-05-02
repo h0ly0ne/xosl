@@ -73,6 +73,9 @@ static char *FileName = "dump_a.dmp";
 
 #define BypassRequest() ( (peekb(0x0000,0x0417) & 0x02) == 0x02 )
 
+#define XRPART_DESTADDR 0x10000000
+#define XRPART_NAME "XRPART00XXF"
+
 /* Global vars. */
 unsigned char *SplashLogo;
 unsigned char *LogoBitmap;
@@ -80,7 +83,7 @@ unsigned char *WallpaperBitmap;
 void *DefaultFont;
 void *AdditionalFont;
 
-
+unsigned char *XRPARTHeaderData;
 
 /**/
 const char *DefaultFontFileName = "DEFAULT XFF";
@@ -614,35 +617,35 @@ void CApplication::ScanForDebugKeys(int Key)
 #endif
 
 void CApplication::StartPart()
-// have to clean-up this mess...
 {
-	void *Ptr1 = (void *)0x10000000;
-	void *Ptr2 = (void *)0x18000000;
-	void *Ptr3 = (void *)0x20000000;
+	XRPARTHeaderData = new unsigned char [32768];
+
+	void *XRPARTDest;
+	int XRPARTImgIndex;
+	char *XRPARTImageName = XRPART_NAME;
+	int XRPARTIndex;
+	int XRPARTImageCount;
+
+	if (!FileSystem->ReadFile(XRPARTImageName,XRPARTHeaderData)) {
+		puts("\r\nUnable to load XRPART image header.\r\n");
+		CriticalError("\r\nUnable to XRPART RPM image header.\r\n");
+	}
+
+	++XRPARTImageName[7];
+	XRPARTImageCount = *(short *)XRPARTHeaderData;
+	XRPARTDest = (void *)XRPART_DESTADDR;
+
+	for (XRPARTIndex = 0; XRPARTIndex < XRPARTImageCount; ++XRPARTIndex) {
+		if (!FileSystem->ReadFile(XRPARTImageName,XRPARTDest)) {
+			puts("\r\nUnable to load XRPART image files.\r\n");
+			CriticalError("\r\nUnable to load XRPART image files.\r\n");
+		}
+		++XRPARTImageName[7];
+		(unsigned long)XRPARTDest += 0x08000000;
+	}
 
 	Graph->SetMode(modeText,false);
 
-	if (FileSystem->ReadFile("XRPART00XXF",Ptr1) != 32768) {
-		puts("\r\nError loading XRPART00XXF\r\n");
-		Dialogs->ShowMessageDialog(NULL,"Ranish Partition Manager","Either Ranish Partition Manager is not installed, or its files are missing");
-		CriticalError("\r\nError loading XRPART00XXF\r\n");
-		return;
-	}
-	
-	if (FileSystem->ReadFile("XRPART01XXF",Ptr2) != 32768) {
-		puts("\r\nError loading XRPART01XXF\r\n");
-		Dialogs->ShowMessageDialog(NULL,"Ranish Partition Manager","Either Ranish Partition Manager is not installed, or its files are missing");
-		CriticalError("\r\nError loading XRPART01XXF\r\n");
-		return;
-	}
-
-	if (FileSystem->ReadFile("XRPART02XXF",Ptr3) != 14276) {
-		puts("\r\nError loading XRPART02XXF\r\n");
-		Dialogs->ShowMessageDialog(NULL,"Ranish Partition Manager","Either Ranish Partition Manager is not installed, or its files are missing");
-		CriticalError("\r\nError loading XRPART02XXF\r\n");
-		return;
-	}
-	
 	DestroyApplication();
 	FinalizeCore();
 	DestroyCoreClasses();
@@ -653,7 +656,7 @@ void CApplication::StartPart()
 		xor	ax,ax
 		mov es,ax
 		push 0x1000
-	    push 0x0200
+		push 0x0200
 		retf
 	}
 }
