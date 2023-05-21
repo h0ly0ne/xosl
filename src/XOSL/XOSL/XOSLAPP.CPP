@@ -8,15 +8,11 @@
  * or at http://www.gnu.org
  */
 
-#include <xoslapp.h>
 #include <cstring.h>
 #include <text.h>
 #include <timer.h>
 #include <mem.h>
-
 #include <key.h>
-#include <bypass.h>
-
 #include <mouse.h>
 #include <graph.h>
 #include <key.h>
@@ -25,42 +21,34 @@
 #include <fat16.h>
 #include <fat32.h>
 #include <quit.h>
-
 #include <ptab.h>
-#include <xosldata.h>
-#include <items.h>
-
-#include <loader.h>
-#include <setup.h>
-#include <prefer.h>
-#include <about.h>
-#include <dialogs.h>
 #include <dcx.h>
-#include <antivir.h>
 #include <disk.h>
 #include <cdrom.h>
-
 #include <dump.h>
+#include <string.h>
 
-#include <strtable.h>
+#include "XOSLAPP.H"
+#include "BYPASS.H"
+#include "XOSLDATA.H"
+#include "ITEMS.H"
+#include "LOADER.H"
+#include "SETUP.H"
+#include "PREFER.H"
+#include "ABOUT.H"
+#include "DIALOGS.H"
+#include "ANTIVIR.H"
+#include "STRTABLE.H"
+#include "EXEHEAD.H"
 
 void printf(const char *format, ...);
-/*void getch()
-{
-	asm xor ah,ah
-	asm int 0x16
-}	*/
-
 long CoreLeft();
 
 /**/
-
-
 #ifdef DOS_DEBUG
 const TMountPart MOUNT_PART = {0x80,0x06,0x00246c00};
 static char *FileName = "dump_a.dmp";
 #endif // DOS_DEBUG
-
 /**/
 
 #define LOGO_WIDTH 218
@@ -73,8 +61,8 @@ static char *FileName = "dump_a.dmp";
 
 #define BypassRequest() ( (peekb(0x0000,0x0417) & 0x02) == 0x02 )
 
-#define XRPART_DESTADDR 0x10000000
-#define XRPART_NAME "XRPART00XXF"
+#define XXPART_DESTADDR 0x10000000
+#define XXPART_NAME "XXPART00XXF"
 
 /* Global vars. */
 unsigned char *SplashLogo;
@@ -83,7 +71,7 @@ unsigned char *WallpaperBitmap;
 void *DefaultFont;
 void *AdditionalFont;
 
-unsigned char *XRPARTHeaderData;
+unsigned char *XXPARTHeaderData;
 
 /**/
 const char *DefaultFontFileName = "DEFAULT XFF";
@@ -616,49 +604,62 @@ void CApplication::ScanForDebugKeys(int Key)
 }
 #endif
 
-void CApplication::StartPart()
-{
-	XRPARTHeaderData = new unsigned char [32768];
+void CApplication::StartPart() {
+    exehead_dos_sixteenbit ehdstbInputFileHeader;
+    char *strSourceFilename = XXPART_NAME;
+    void *memTargetBinary = (void *)XXPART_DESTADDR;
+    unsigned long ulInputFileSize;
+    unsigned short ulInputFileParts;
+    unsigned short ulInputLastPartSize;
+    unsigned int uInputFileIndex = 0;
 
-	void *XRPARTDest;
-	int XRPARTImgIndex;
-	char *XRPARTImageName = XRPART_NAME;
-	int XRPARTIndex;
-	int XRPARTImageCount;
+    Graph->SetMode(modeText,false);
 
-	if (!FileSystem->ReadFile(XRPARTImageName,XRPARTHeaderData)) {
-		puts("\r\nUnable to load XRPART image header.\r\n");
-		CriticalError("\r\nUnable to XRPART RPM image header.\r\n");
+    ulInputFileSize = FileSystem->ReadFile(strSourceFilename, memTargetBinary);
+    if (!ulInputFileSize) { CriticalError("\r\nUnable to load XXPART full header part.\r\n"); return; }
+
+    memcpy(&ehdstbInputFileHeader, memTargetBinary, sizeof(ehdstbInputFileHeader));
+    ulInputLastPartSize = (unsigned short)ehdstbInputFileHeader.e_csum;
+	ulInputFileParts = (unsigned short)ehdstbInputFileHeader.e_ovno;
+    ehdstbInputFileHeader.e_csum = 0;
+    ehdstbInputFileHeader.e_ovno = 0;
+    memcpy(memTargetBinary, &ehdstbInputFileHeader, sizeof(ehdstbInputFileHeader));
+
+	for (uInputFileIndex = 1; uInputFileIndex <= ulInputFileParts; uInputFileIndex++) {
+        ++strSourceFilename[7];
+        (unsigned long)memTargetBinary += ulInputFileSize * 4096;
+
+        ulInputFileSize = FileSystem->ReadFile(strSourceFilename, memTargetBinary);
+        if (!ulInputFileSize) { CriticalError("\r\nUnable to load XXPART image.\r\n"); return; }
+        else {
+            if(uInputFileIndex < ulInputFileParts) {
+                if(ulInputFileSize != 32768) {
+                    CriticalError("\r\nWrong size of XXPART image part(s).");
+                    return;
+                }
+            }
+            else {
+                if(ulInputFileSize != ulInputLastPartSize) {
+                    CriticalError("\r\nWrong size of XXPART image part(s).");
+                    return;
+                }
+            }
+        }
 	}
 
-	++XRPARTImageName[7];
-	XRPARTImageCount = *(short *)XRPARTHeaderData;
-	XRPARTDest = (void *)XRPART_DESTADDR;
+    DestroyApplication();
+    FinalizeCore();
+    DestroyCoreClasses();
 
-	for (XRPARTIndex = 0; XRPARTIndex < XRPARTImageCount; ++XRPARTIndex) {
-		if (!FileSystem->ReadFile(XRPARTImageName,XRPARTDest)) {
-			puts("\r\nUnable to load XRPART image files.\r\n");
-			CriticalError("\r\nUnable to load XRPART image files.\r\n");
-		}
-		++XRPARTImageName[7];
-		(unsigned long)XRPARTDest += 0x08000000;
-	}
+    printf("\r\nStarting Ranish Partition Manager...");
 
-	Graph->SetMode(modeText,false);
-
-	DestroyApplication();
-	FinalizeCore();
-	DestroyCoreClasses();
-
-	puts("\r\nStarting Ranish Partition Manager...");
-
-	asm {
-		xor	ax,ax
-		mov es,ax
-		push 0x1000
-		push 0x0200
-		retf
-	}
+    asm {
+        xor	ax,ax
+        mov es,ax
+        push 0x1000
+        push 0x0200
+        retf
+    }
 }
 
 void CApplication::PartPwdProc(CApplication &Application, const char *Password)

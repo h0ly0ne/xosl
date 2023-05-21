@@ -87,7 +87,7 @@ const char *CXoslFiles::FileList[] = {
 	"DEFAULT.XFF","EXTRA.XFF",
 	"ORIG_MBR.XCF","CURR_MBR.XCF","SBM_IPL0.XCF",
 	"BOOTITEM.XDF","XOSLDATA.XDF",
-	"XRPART00.XXF","XRPART01.XXF","XRPART02.XXF","XRPART03.XXF"
+	"XXPART00.XXF","XXPART01.XXF","XXPART02.XXF","XXPART03.XXF"
 };
 
 const int CXoslFiles::FileCount = sizeof (FileList) / sizeof (char *);

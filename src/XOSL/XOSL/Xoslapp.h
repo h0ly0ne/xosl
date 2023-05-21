@@ -77,7 +77,6 @@ class CApplication {
 
 		static void ShutDownReboot(CApplication *Application);
 
-
 		void DoSplashFadeOut();
 		void DoAppFadeIn();
 		bool AutoBootAvail();

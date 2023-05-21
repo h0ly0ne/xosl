@@ -85,7 +85,7 @@ int CFsCreator::InitBootRecord(unsigned short Drive, unsigned long Sector)
 	BootRecord.Jump[1] = 0x3c;
 	BootRecord.Jump[2] = 0x90;*/
 
-	MemCopy(BootRecord.OEM_ID,"XOSLINST",8);
+	MemCopy(BootRecord.OEM_ID,"XOSL    ",8);
 	BootRecord.SectorSize = 512;
 	BootRecord.ClusterSize = 16;
 	BootRecord.ReservedSectors = 1;
@@ -103,7 +103,7 @@ int CFsCreator::InitBootRecord(unsigned short Drive, unsigned long Sector)
 	BootRecord.Drive = Drive;
 	BootRecord.Signature = 0x29;
 	BootRecord.SerialNo = 0x4c534f58;
-	MemCopy(BootRecord.Label,"XOSL114    ",11);
+	MemCopy(BootRecord.Label,"XOSL       ",11);
 	MemCopy(BootRecord.FSID,"FAT16   ",8);
 	BootRecord.MagicNumber = 0x534f;
 	TextUI.OutputStr("done\n");

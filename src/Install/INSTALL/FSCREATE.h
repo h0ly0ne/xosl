@@ -50,7 +50,7 @@ private:
 	class CBootRecord {
 	public:
 		unsigned char Jump[3];			// jmp short + nop
-		unsigned char OEM_ID[8];		// XOSLINST
+		unsigned char OEM_ID[8];		// XOSL
 		unsigned short SectorSize;		// 512
 		unsigned char ClusterSize;		// 16 (8192 byte)
 		unsigned short ReservedSectors;	// 1
@@ -66,7 +66,7 @@ private:
 		unsigned short Drive;			// ?
 		unsigned char Signature;		// 0x29 (?)
 		unsigned long SerialNo;			// 0x4c534f58 (don't really care)
-		unsigned char Label[11];		// XOSL110
+		unsigned char Label[11];		// XOSL
 		unsigned char FSID[8];			// FAT16
 		unsigned char Loader[448];		// IPL
 		unsigned short MagicNumber;		// 0x534f (used by XOSLLOAD)

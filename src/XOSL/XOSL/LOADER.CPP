@@ -20,10 +20,40 @@
 
 #include <strtable.h>
 
+char *ultoa(unsigned long Value, char *Str, int Base)
+{
+	char InvString[64];
+	char *pStr;
+	char *pOrig = Str;
+
+	pStr = InvString;
+	do {
+		*pStr++ = "0123456789ABCDEF"[Value % Base];
+		Value /= Base;
+	} while (Value);
+
+	while (pStr != InvString) {
+		*Str++ = *--pStr;
+	}
+	*Str = '\0';
+	return pOrig;
+}
+
+void to_upper(char* string)
+{
+    const char OFFSET = 'a' - 'A';
+    while (*string)
+    {
+        *string = (*string >= 'a' && *string <= 'z') ? *string -= OFFSET : *string;
+        string++;
+    }
+}
+
 void printf(const char *format, ...)
 {
 	unsigned short *argl;
-	char buf[32];
+    unsigned long *argll;
+	char buf[64];
 
 	for (argl = &((unsigned short *)&format)[2]; *format; ++format)
 		switch (*format) {
@@ -36,11 +66,15 @@ void printf(const char *format, ...)
 						putch(*argl++);
 						break;
 					case 'd':
-						itoa(*argl++,buf,DEC);
+						itoa(*argl++, buf, DEC);
 						puts(buf);
 						break;
 					case 'x':
-						itoa(*argl++,buf,HEX);
+						itoa(*argl++, buf, HEX);
+						puts(buf);
+						break;
+					case 'X':
+						to_upper(itoa(*argl++, buf, HEX));
 						puts(buf);
 						break;
 					case 's':
@@ -48,15 +82,26 @@ void printf(const char *format, ...)
 						argl += 2;
 						break;
 					case 'l':
+                    case 'L':
 						if (format[1] == 'd') {
 							++format;
-							itoa(*(unsigned long *)argl++,buf,DEC);
+							itoa(*(unsigned long *)argl++, buf, DEC);
 							puts(buf);
 							break;
 						}
 						if (format[1] == 'x') {
+                            argll = &((unsigned long *)&format)[2];
 							++format;
-							itoa(*(unsigned long *)argl++,buf,HEX);
+							ultoa(*(unsigned long *)argll, buf, HEX);
+                            *argl++;
+							puts(buf);
+							break;
+						}
+                        if (format[1] == 'X') {
+                            argll = &((unsigned long *)&format)[2];
+							++format;
+							to_upper(ultoa(*(unsigned long *)argll, buf, HEX));
+                            *argl++;
 							puts(buf);
 							break;
 						}
@@ -71,8 +116,6 @@ void printf(const char *format, ...)
 				break;
 		}
 }
-
-
 
 extern char *LogoBitmap;
 

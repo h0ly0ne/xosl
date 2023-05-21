@@ -22,9 +22,9 @@ _creat          proc
                 xor     cx,cx
                 lds     dx,[bp + 4]
                 int     21h
-                jnc     CreatOk
+                jnc     CreatOK
                 mov     ax,-1
-CreatOk:        pop     ds
+CreatOK:        pop     ds
                 pop     bp
                 ret
 _creat          endp
@@ -39,9 +39,9 @@ _open           proc
                 lds     dx,[bp + 4]
                 xor     cx,cx
                 int     21h
-                jnc     OpenOk
+                jnc     OpenOK
                 mov     ax,-1
-OpenOk:         pop     ds
+OpenOK:         pop     ds
                 pop     bp
                 ret
 _open           endp
@@ -105,7 +105,7 @@ _read           proc
                 int     21h
                 jnc     ReadOK
                 xor     ax,ax
-ReadOk:         pop     ds
+ReadOK:         pop     ds
                 pop     bp
                 ret
 _read           endp
@@ -122,7 +122,7 @@ _write          proc
                 int     21h
                 jnc     WriteOK
                 xor     ax,ax
-WriteOk:        pop     ds
+WriteOK:        pop     ds
                 pop     bp
                 ret
 _write          endp

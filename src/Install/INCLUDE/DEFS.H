@@ -54,8 +54,9 @@
 
 
 typedef int bool;
-#define false FALSE
-#define true TRUE;
+#define true 1
+#define false 0
+#define typename class
 
 
 #endif

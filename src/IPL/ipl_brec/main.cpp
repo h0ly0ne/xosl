@@ -15,7 +15,7 @@
 class CBootRecord {
 public:
 	unsigned char Jump[3];			// jmp short + nop
-	unsigned char OEM_ID[8];		// XOSLINST
+	unsigned char OEM_ID[8];		// XOSL
 	unsigned short SectorSize;		// 512
 	unsigned char ClusterSize;		// 16 (8192 byte)
 	unsigned short ReservedSectors;	// 1

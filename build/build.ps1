@@ -1,8 +1,3 @@
-#########################################
-# Define additional required components #
-#########################################
-#Add-Type -Assembly System.IO.Compression.FileSystem;
-
 #############################
 # Cleanup building terminal #
 #############################
@@ -12,7 +7,7 @@ Clear-Host;
 # Required download locations for 3rd party components #
 ########################################################
 $ProgressPreference = 'SilentlyContinue' 
-$url_dosboxx = "https://github.com/joncampbell123/dosbox-x/releases/download/dosbox-x-v2023.03.31/dosbox-x-vsbuild-win64-20230401023040.zip";
+$url_dosboxx = "https://github.com/joncampbell123/dosbox-x/releases/download/dosbox-x-v2023.05.01/dosbox-x-vsbuild-win64-20230501152329.zip";
 $url_pkzip = "http://cd.textfiles.com/darkdomain/programs/dos/archivers/pkz204g.exe";
 $url_pklite = "http://cd.textfiles.com/darkdomain/programs/dos/archivers/pklts201.exe";
 $url_unxutils = "https://deac-ams.dl.sourceforge.net/project/unxutils/unxutils/current/UnxUtils.zip";
@@ -21,7 +16,7 @@ $url_unxutils = "https://deac-ams.dl.sourceforge.net/project/unxutils/unxutils/c
 # Installing DOSBox-X #
 #######################
 Write-Host "- Installing DOSBox-X";
-$file_dosboxx = [IO.Path]::GetFullPath([IO.Path]::Combine($((Get-Item $PSScriptRoot).Parent.FullName),'tools') + $(Split-Path -Path $url_dosboxx -Leaf));
+$file_dosboxx = [IO.Path]::GetFullPath([IO.Path]::Combine($((Get-Item $PSScriptRoot).Parent.FullName),'tools') + "\" + $(Split-Path -Path $url_dosboxx -Leaf));
 $folder_dosboxx = [IO.Path]::GetFullPath([IO.Path]::Combine($((Get-Item $PSScriptRoot).Parent.FullName),'tools','dosbox-x'));
 if(-not(Test-path $folder_dosboxx -PathType Container)) {
 	Invoke-WebRequest -Uri $url_dosboxx -OutFile $file_dosboxx;
@@ -40,7 +35,7 @@ if(-not(Test-path $folder_dosboxx -PathType Container)) {
 # Installing PKZip #
 ####################
 Write-Host "- Installing PKZip";
-$file_pkzip = [IO.Path]::GetFullPath([IO.Path]::Combine($((Get-Item $PSScriptRoot).Parent.FullName),'tools') + $(Split-Path -Path $url_pkzip -Leaf));
+$file_pkzip = [IO.Path]::GetFullPath([IO.Path]::Combine($((Get-Item $PSScriptRoot).Parent.FullName),'tools') + "\" + $(Split-Path -Path $url_pkzip -Leaf));
 $folder_pkzip = [IO.Path]::GetFullPath([IO.Path]::Combine($((Get-Item $PSScriptRoot).Parent.FullName),'tools','pkzip'));
 if(-not(Test-path $folder_pkzip -PathType Container)) {
 	Invoke-WebRequest -Uri $url_pkzip -OutFile $file_pkzip;
@@ -59,7 +54,7 @@ if(-not(Test-path $folder_pkzip -PathType Container)) {
 # Installing PKLite #
 #####################
 Write-Host "- Installing PKLite";
-$file_pklite = [IO.Path]::GetFullPath([IO.Path]::Combine($((Get-Item $PSScriptRoot).Parent.FullName),'tools') + $(Split-Path -Path $url_pklite -Leaf));
+$file_pklite = [IO.Path]::GetFullPath([IO.Path]::Combine($((Get-Item $PSScriptRoot).Parent.FullName),'tools') + "\" + $(Split-Path -Path $url_pklite -Leaf));
 $folder_pklite = [IO.Path]::GetFullPath([IO.Path]::Combine($((Get-Item $PSScriptRoot).Parent.FullName),'tools','pklite'));
 if(-not(Test-path $folder_pklite -PathType Container)) {
 	Invoke-WebRequest -Uri $url_pklite -OutFile $file_pklite;
@@ -78,7 +73,7 @@ if(-not(Test-path $folder_pklite -PathType Container)) {
 # Installing "UnxUtils for Win32" #
 ###################################
 Write-Host "- Installing UnxUtils for Win32";
-$file_unxutils = [IO.Path]::GetFullPath([IO.Path]::Combine($((Get-Item $PSScriptRoot).Parent.FullName),'tools') + $(Split-Path -Path $url_unxutils -Leaf));
+$file_unxutils = [IO.Path]::GetFullPath([IO.Path]::Combine($((Get-Item $PSScriptRoot).Parent.FullName),'tools') + "\" + $(Split-Path -Path $url_unxutils -Leaf));
 $folder_unxutils = [IO.Path]::GetFullPath([IO.Path]::Combine($((Get-Item $PSScriptRoot).Parent.FullName),'tools','unxutils'));
 if(-not(Test-path $folder_unxutils -PathType Container)) {
 	Invoke-WebRequest -Uri $url_unxutils -OutFile $file_unxutils;
@@ -125,7 +120,7 @@ $proc_floppy.WaitForExit();
 ##########################
 Write-Host "- Starting build process";
 $process_dosboxx = Start-Process -NoNewWindow -WorkingDirectory $(Get-Item $PSScriptRoot) -FilePath $([IO.Path]::GetFullPath([IO.Path]::Combine($((Get-Item $PSScriptRoot).Parent.FullName),'tools') + '\dosbox-x\dosbox-x.exe')) -ArgumentList "-conf",$([IO.Path]::GetFullPath([IO.Path]::Combine($((Get-Item $PSScriptRoot).Parent.FullName),'tools') + '\dosbox-x.conf')),"-fastlaunch","-log-con","-silent","-c ""T:\BUILD.BAT""" -PassThru;
-$process_dosboxx_instances = 0;
+$process_dosboxx_instances = 1;
 
 try {
 	Write-Host "- Starting logging job";
@@ -160,7 +155,6 @@ finally
 	#########################
 	Write-Host "- Stopping process(es)";
 	try { $process_dosboxx = (Get-Process -inputObject $process_dosboxx -ErrorAction SilentlyContinue); } catch { $process_dosboxx = $null; } finally { if ($null -ne $process_dosboxx) { Stop-Process -inputObject $process_dosboxx; } }
-	try { $process_split = (Get-Process -inputObject $process_split -ErrorAction SilentlyContinue); } catch { $process_split = $null; } finally { if ($null -ne $process_split) { Stop-Process -inputObject $process_split; } }
 }
 
 ####################
